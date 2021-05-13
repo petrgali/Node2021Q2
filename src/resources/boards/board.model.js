@@ -4,13 +4,7 @@ class Board {
   constructor({ id = uuid.v4(), title = 'BOARD', columns = [] } = {}) {
     this.id = id;
     this.title = title;
-    [...this.columns] = columns;
-  }
-
-  static toResponse(board) {
-    const { id, title, columns } = board;
-    return { id, title, columns };
+    this.columns = columns;
   }
 }
-
 module.exports = Board;
