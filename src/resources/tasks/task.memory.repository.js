@@ -25,7 +25,7 @@ const updateTask = async (params, data) => {
   if (task) Object.assign(task, data);
 };
 const deleteTask = async (params) => {
-  const idx = dummyData.find((task) => task.id === params.task);
+  const idx = dummyData.findIndex((task) => task.id === params.task);
   dummyData.splice(idx, 1);
 };
 
