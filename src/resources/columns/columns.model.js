@@ -1,7 +1,7 @@
-const uuid = require('uuid');
+const uuid = require('uuid').v4;
 
 class Column {
-  constructor({ id = uuid.v4(), title = 'COLUMN', order = 0 } = {}) {
+  constructor({ id = uuid(), title = 'COLUMN', order = 0 } = {}) {
     this.id = id;
     this.title = title;
     this.order = order;
