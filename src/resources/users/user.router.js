@@ -8,12 +8,8 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  try {
-    const user = usersService.addNewRecord(req.body);
-    res.status(201).json(user);
-  } catch (err) {
-    res.status(400).json({});
-  }
+  const user = await usersService.addNewRecord(req.body);
+  res.status(201).json(User.toResponse(user));
 });
 
 router.route('/:id').get(async (req, res) => {
@@ -22,13 +18,7 @@ router.route('/:id').get(async (req, res) => {
 });
 
 router.route('/:id').put(async (req, res) => {
-  const update = {
-    name: req.body.name,
-    login: req.body.login,
-    password: req.body.password,
-  };
-  await usersService.updateRecord(req.params.id, update);
-  const updatedUser = await usersService.getById(req.params.id);
+  const updatedUser = await usersService.updateRecord(req.body, req.params);
   res.status(updatedUser ? 200 : 400).json(User.toResponse(updatedUser));
 });
 

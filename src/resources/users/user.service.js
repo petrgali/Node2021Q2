@@ -10,14 +10,19 @@ const addNewRecord = (data) => {
     login: data.login,
     password: data.password,
   });
-  try {
-    usersRepo.addNewRecord(user);
-    return User.toResponse(user);
-  } catch (err) {
-    return { error: err };
-  }
+
+  usersRepo.addNewRecord(user);
+  return user;
 };
-const updateRecord = (idx, data) => usersRepo.updateRecord(idx, data);
+const updateRecord = (body, params) => {
+  const update = {
+    name: body.name,
+    login: body.login,
+    password: body.password,
+  };
+  usersRepo.updateRecord(params.id, update);
+  return getById(params.id);
+};
 const deleteRecord = (idx) => {
   taskRepo.unassignTask(idx);
   usersRepo.deleteRecord(idx);
