@@ -8,15 +8,10 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  if (req.body.name && req.body.login && req.body.password) {
-    const user = new User({
-      name: req.body.name,
-      login: req.body.login,
-      password: req.body.password,
-    });
-    await usersService.addNewRecord(user);
-    res.status(201).json(User.toResponse(user));
-  } else {
+  try {
+    const user = usersService.addNewRecord(req.body);
+    res.status(201).json(user);
+  } catch (err) {
     res.status(400).json({});
   }
 });

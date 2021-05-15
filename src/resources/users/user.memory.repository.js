@@ -35,7 +35,9 @@ const getAll = async () => dummyData;
 
 const getById = async (idx) => dummyData.find((user) => user.id === idx);
 
-const addNewRecord = async (user) => dummyData.push(user);
+const addNewRecord = async (user) => {
+    dummyData.push(user);
+};
 
 const updateRecord = async (idx, data) => {
   const user = await getById(idx);

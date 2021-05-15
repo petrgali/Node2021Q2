@@ -28,11 +28,32 @@ const deleteTask = async (params) => {
   const idx = dummyData.findIndex((task) => task.id === params.task);
   dummyData.splice(idx, 1);
 };
-
+const deleteBoardTasks = async (idx) => {
+  const records = [];
+  dummyData.map((task, id) => {
+    if (task.boardId === idx) {
+      records.push(id);
+      return true;
+    }
+    return false;
+  });
+  records.map((id) => deleteTask(id));
+};
+const unassignTask = async (idx) => {
+  dummyData.filter((task) => {
+    if (task.userId === idx) {
+      Object.assign(task, { userId: null });
+      return true;
+    }
+    return false;
+  });
+};
 module.exports = {
   getBoardTasks,
   addBoardTask,
   getTaskById,
   updateTask,
   deleteTask,
+  unassignTask,
+  deleteBoardTasks,
 };
