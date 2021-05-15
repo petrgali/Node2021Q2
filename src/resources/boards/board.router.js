@@ -1,6 +1,4 @@
 const router = require('express').Router();
-const Board = require('./board.model');
-const Column = require('../columns/columns.model');
 const boardsService = require('./board.service');
 
 router.route('/').get(async (req, res) => {
@@ -9,18 +7,7 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/').post(async (req, res) => {
-  const columns = req.body.columns.map(
-    (item) =>
-      new Column({
-        title: item.title,
-        order: item.order,
-      })
-  );
-  const board = new Board({
-    title: req.body.title,
-    columns,
-  });
-  await boardsService.addNewRecord(board);
+  const board = await boardsService.addNewRecord(req.body);
   res.status(201).json(board);
 });
 
@@ -30,15 +17,8 @@ router.route('/:id').get(async (req, res) => {
 });
 
 router.route('/:id').put(async (req, res) => {
-  const board = await boardsService.getById(req.params.id);
-  const { columns } = board;
-  const update = {
-    title: req.body.title,
-    columns,
-  };
-  await boardsService.updateRecord(req.params.id, update);
-  const updatedBoard = await boardsService.getById(req.params.id);
-  res.status(updatedBoard ? 200 : 400).json(updatedBoard);
+  const updated = await boardsService.updateRecord(req);
+  res.status(updated ? 200 : 400).json(updated);
 });
 
 router.route('/:id').delete(async (req, res) => {

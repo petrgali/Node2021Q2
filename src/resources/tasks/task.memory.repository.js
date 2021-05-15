@@ -1,20 +1,8 @@
-const dummyData = [
-  {
-    id: null,
-    title: '',
-    order: 0,
-    description: '',
-    userId: null,
-    boardId: null,
-    columnId: null,
-  },
-];
+const DB = require('../../common/mockDB').tasks;
 
 const getBoardTasks = async (idx) =>
-  dummyData.filter((record) => record.boardId === idx);
-
-const addBoardTask = async (task) => dummyData.push(task);
-
+  DB.filter((record) => record.boardId === idx);
+const addBoardTask = async (task) => DB.push(task);
 const getTaskById = async (params) => {
   const tasks = await getBoardTasks(params.board);
   const task = tasks.find((record) => record.id === params.task);
@@ -25,12 +13,12 @@ const updateTask = async (params, data) => {
   if (task) Object.assign(task, data);
 };
 const deleteTask = async (params) => {
-  const idx = dummyData.findIndex((task) => task.id === params.task);
-  dummyData.splice(idx, 1);
+  const idx = DB.findIndex((task) => task.id === params.task);
+  DB.splice(idx, 1);
 };
 const deleteBoardTasks = async (idx) => {
   const records = [];
-  dummyData.map((task, id) => {
+  DB.map((task, id) => {
     if (task.boardId === idx) {
       records.push(id);
       return true;
@@ -40,13 +28,9 @@ const deleteBoardTasks = async (idx) => {
   records.map((id) => deleteTask(id));
 };
 const unassignTask = async (idx) => {
-  dummyData.filter((task) => {
-    if (task.userId === idx) {
-      Object.assign(task, { userId: null });
-      return true;
-    }
-    return false;
-  });
+  DB.filter((task) =>
+    task.userId === idx ? Object.assign(task, { userId: null }) : false
+  );
 };
 module.exports = {
   getBoardTasks,
