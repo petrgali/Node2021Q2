@@ -26,7 +26,7 @@ const taskAPI = {
    * @memberof module:taskAPI
    * @async
    * @param {Object} params - Specified id's of board and task
-   * @param {String} params.board - Board id
+   * @param {String} params.board- Board id
    * @param {String} params.task - Task id
    * @returns {Promise<Task>}
    */

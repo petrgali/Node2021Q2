@@ -32,7 +32,7 @@ const boardAPI = {
    * Update data in board with specified idx
    * @memberof module:boardAPI
    * @async
-   *  @param {String} idx - Board id to update
+   * @param {String} idx - Board id to update
    * @param {Object} data - Board info to update
    * @returns {Promise<void>}
    */
