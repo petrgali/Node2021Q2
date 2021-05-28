@@ -13,7 +13,6 @@ const serviceAPI = {
       login: data.login,
       password: data.password,
     });
-
     API.addNewRecord(user);
     return user;
   },
