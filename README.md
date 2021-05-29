@@ -17,6 +17,12 @@ git clone {repository URL}
 npm install
 ```
 
+## Generating Jsdoc documentation
+
+```
+npm run doc
+```
+
 ## Running application
 
 ```
