@@ -1,8 +1,21 @@
 const uuid = require('uuid').v4;
+
+export interface IColumn {
+  id: string,
+  title: string,
+  order: number
+}
+export interface IColumnRaw {
+  title: string,
+  order: number
+}
 /**
  * Class to create a new column
  */
 class Column {
+  public id: string;
+  public title: string;
+  public order: number
   /**
    * New column details
    * @param {Object} [columnInfo={}] - Task information
@@ -15,7 +28,7 @@ class Column {
     this.id = id;
     /** @property {String} title - column title */
     this.title = title;
-    /** @property {String} order - column order */
+    /** @property {Number} order - column order */
     this.order = order;
   }
 }

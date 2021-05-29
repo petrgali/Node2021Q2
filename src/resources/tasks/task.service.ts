@@ -1,3 +1,5 @@
+import { ITask, ITaskRaw } from "./task.model";
+
 const API = require('./task.memory.repository').taskAPI;
 const Task = require('./task.model');
 /** @module taskService */
@@ -10,9 +12,9 @@ const serviceAPI = {
    * Redirect call to taskAPI {@link module:taskAPI.getBoardTasks}
    * @memberof module:taskService
    * @param {String} idx - Board id to show all tasks belongs to
-   * @returns {Promise<Task[]>}}
+   * @returns {Promise<Task[]>}
    */
-  getBoardTasks: (idx) => API.getBoardTasks(idx),
+  getBoardTasks: (idx: string): Array<ITask> => API.getBoardTasks(idx),
   /**
    * Redirect call to taskAPI {@link module:taskAPI.addBoardTask}
    * @memberof module:taskService
@@ -25,14 +27,14 @@ const serviceAPI = {
    * @param {String} [data.body.columnId] - Task column
    * @returns {Promise<Task>}}
    */
-  addBoardTask: (data) => {
-    const task = new Task({
-      title: data.body.title,
-      order: data.body.order,
-      description: data.body.description,
-      userId: data.body.userId,
-      boardId: data.params.boardId,
-      columnId: data.body.columnId,
+  addBoardTask: (data: ITaskRaw, id: string): ITask => {
+    const task: ITask = new Task({
+      title: data.title,
+      order: data.order,
+      description: data.description,
+      userId: data.userId,
+      boardId: id,
+      columnId: data.columnId,
     });
     API.addBoardTask(task);
     return task;
@@ -45,11 +47,8 @@ const serviceAPI = {
    * @param {String} params.taskId - Specified taskId
    * @returns {Promise<Task>}}
    */
-  getTaskById: (params) =>
-    API.getTaskById({
-      board: params.boardId,
-      task: params.taskId,
-    }),
+  getTaskById: (boardId: string, taskId: string): ITask =>
+    API.getTaskById(boardId, taskId),
   /**
    * Redirect call to taskAPI {@link module:taskAPI.updateTask}
    * @memberof module:taskService
@@ -65,21 +64,16 @@ const serviceAPI = {
    * @param {String} params.taskId - Specified taskId
    * @returns {Promise<Task>}
    */
-  updateTask: (body, options) => {
-    const update = {
-      title: body.title,
-      order: body.order,
-      description: body.description,
-      userId: body.userId,
-      boardId: body.boardId,
-      columnId: body.columnId,
+  updateTask: (data: ITaskRaw, boardId: string, taskId: string): ITask => {
+    const update: ITaskRaw = {
+      ...data
     };
-    const params = {
-      board: options.boardId,
-      task: options.taskId,
-    };
-    API.updateTask(params, update);
-    return serviceAPI.getTaskById(params);
+    // const params = {
+    //   board: options.boardId,
+    //   task: options.taskId,
+    // };
+    API.updateTask(boardId, taskId, update);
+    return serviceAPI.getTaskById(boardId, taskId);
   },
   /**
    * * Redirect call to taskAPI {@link module:taskAPI.deleteTask}
@@ -89,11 +83,8 @@ const serviceAPI = {
    * @param {String} params.taskId - Specified taskId
    * @returns {Promise<void>}
    */
-  deleteTask: (params) =>
-    API.deleteTask({
-      board: params.boardId,
-      task: params.taskId,
-    }),
+  deleteTask: (_boardId: string, taskId: string): void =>
+    API.deleteTask(taskId)
 };
 
 module.exports = { serviceAPI };

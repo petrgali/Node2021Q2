@@ -1,3 +1,5 @@
+import { IBoard, IBoardRaw } from "./board.model";
+
 /** @module boardAPI */
 const DB = require('../../common/mockDB').boards;
 /**
@@ -11,7 +13,7 @@ const boardAPI = {
    * @async
    * @returns {Promise<Board[]>}
    */
-  getAll: async () => DB,
+  getAll: async (): Promise<IBoard> => DB,
   /**
    * Return board with specefied id
    * @memberof module:boardAPI
@@ -19,7 +21,7 @@ const boardAPI = {
    * @param {String} idx - Specified board idx to show
    * @returns {Promise<Board>}
    */
-  getById: async (idx) => DB.find((board) => board.id === idx),
+  getById: async (idx: string): Promise<IBoard> => DB.find((board: IBoard) => board.id === idx),
   /**
    * Add a new board to DB
    * @memberof module:boardAPI
@@ -27,7 +29,7 @@ const boardAPI = {
    * @param {Board} data - Board class instance to add
    * @returns {Promise<number>}
    */
-  addNewRecord: async (data) => DB.push(data),
+  addNewRecord: async (board: IBoard): Promise<number> => DB.push(board),
   /**
    * Update data in board with specified idx
    * @memberof module:boardAPI
@@ -36,8 +38,8 @@ const boardAPI = {
    * @param {Object} data - Board info to update
    * @returns {Promise<void>}
    */
-  updateRecord: async (idx, data) => {
-    const board = await boardAPI.getById(idx);
+  updateRecord: async (idx: string, data: IBoardRaw): Promise<void> => {
+    const board: IBoard = await boardAPI.getById(idx);
     if (board) Object.assign(board, data);
   },
   /**
@@ -47,8 +49,8 @@ const boardAPI = {
    * @param {String} idx - Board id to remove
    * @returns {Promise<void>}
    */
-  deleteRecord: async (idx) => {
-    const index = DB.findIndex((record) => record.id === idx);
+  deleteRecord: async (idx: string): Promise<void> => {
+    const index: number = DB.findIndex((record: IBoard) => record.id === idx);
     DB.splice(index, 1);
   },
 };

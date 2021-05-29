@@ -1,8 +1,33 @@
 const uuid = require('uuid').v4;
+
+export interface ITask {
+  id: string,
+  title: string,
+  order: number,
+  description: string,
+  userId: string,
+  boardId: string,
+  columnId: string,
+}
+export interface ITaskRaw {
+  title?: string,
+  order?: number,
+  description?: string,
+  userId?: string,
+  boardId?: string,
+  columnId?: string,
+}
 /**
  * Class to create a new task
  */
 class Task {
+  public id: string;
+  public title: string;
+  public order: number;
+  public description: string;
+  public userId: string;
+  public boardId: string;
+  public columnId: string
   /**
    * New task details
    * @param {Object} [taskInfo={}] - Task information
@@ -39,12 +64,12 @@ class Task {
     this.columnId = columnId;
   }
 
- /**
-   * @property {Function} toResponse Returns task instance
-   * @param {Task} user a User class instance
-   * @returns {Task} User class object with trimmed password
-   */
-  static toResponse(task) {
+  /**
+    * @property {Function} toResponse Returns task instance
+    * @param {Task} user a User class instance
+    * @returns {Task} User class object with trimmed password
+    */
+  static toResponse(task: ITask): ITask {
     const { id, title, order, description, userId, boardId, columnId } = task;
     return { id, title, order, description, userId, boardId, columnId };
   }

@@ -1,8 +1,22 @@
+import { IColumn } from '../columns/columns.model'
 const uuid = require('uuid').v4;
+
+export interface IBoard {
+  id: string,
+  title: string,
+  columns: Array<IColumn>
+}
+export interface IBoardRaw {
+  title?: string,
+  columns?: Array<IColumn>
+}
 /**
  * Class to create a new board
  */
 class Board {
+  public id: string;
+  public title: string;
+  public columns: Array<IColumn>;
   /**
    * New board details
    * @param {Object} [boardInfo={}] - board information

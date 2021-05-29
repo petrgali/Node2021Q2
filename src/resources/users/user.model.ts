@@ -1,8 +1,28 @@
 const uuid = require('uuid').v4;
+
+export interface IUser {
+  id: string;
+  name: string;
+  login: string;
+  password: string;
+}
+export interface IUserRaw {
+  name?: string;
+  login?: string;
+  password?: string;
+}
 /**
  * Class to create a new user
  */
 class User {
+  public id: string;
+
+  public name: string;
+
+  public login: string;
+
+  public password: string;
+
   /**
    * New user details
    * @param {Object} [userInfo={}] - User registration information
@@ -32,7 +52,7 @@ class User {
    * @param {User} user a User class instance
    * @returns {Object} User class object with trimmed password
    */
-  static toResponse(user) {
+  static toResponse(user: User) {
     const { id, name, login } = user;
     return { id, name, login };
   }
