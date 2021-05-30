@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { IBoard } from './board.model'
+import { serviceAPI } from './board.service';
 const router = require('express').Router();
-const { serviceAPI } = require('./board.service');
 
 router.route('/').get(async (_req: Request, res: Response) => {
   const boards: Array<IBoard> = await serviceAPI.getAll();
@@ -9,7 +9,7 @@ router.route('/').get(async (_req: Request, res: Response) => {
 });
 
 router.route('/').post(async (req: Request, res: Response) => {
-  const board: IBoard = await serviceAPI.addNewRecord(req.body.title, req.body.columns);
+  const board: IBoard = serviceAPI.addNewRecord(req.body.title, req.body.columns);
   res.status(201).json(board);
 });
 
@@ -27,4 +27,4 @@ router.route('/:id').delete(async (req: Request, res: Response) => {
   await serviceAPI.deleteRecord(req.params['id']);
   res.status(204).json({});
 });
-module.exports = router;
+export default router;

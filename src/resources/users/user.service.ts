@@ -1,13 +1,14 @@
 import { IUser, IUserRaw } from './user.model'
-const API = require('./user.memory.repository').userAPI;
-const { taskAPI } = require('../tasks/task.memory.repository');
-const serviceAPI = {
-  getAll: (): Array<IUser> => API.getAll(),
-  getById: (idx: string | undefined): IUser => API.getById(idx),
+import API from './user.memory.repository';
+import taskAPI from '../tasks/task.memory.repository';
+
+export const serviceAPI = {
+  getAll: (): Promise<Array<IUser>> => API.getAll(),
+  getById: (idx: string | undefined): Promise<IUser> => API.getById(idx),
   addNewRecord: (data: IUser): void => {
     API.addNewRecord(data);
   },
-  updateRecord: (body: IUserRaw, idx: string | undefined): IUser => {
+  updateRecord: (body: IUserRaw, idx: string | undefined): Promise<IUser> => {
     const update = {
       name: body.name,
       login: body.login,
@@ -21,4 +22,3 @@ const serviceAPI = {
     API.deleteRecord(idx);
   },
 };
-module.exports = { serviceAPI };

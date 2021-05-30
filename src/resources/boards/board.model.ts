@@ -1,23 +1,25 @@
 import { IColumn } from '../columns/columns.model'
 const uuid = require('uuid').v4;
+export { IBoard, IBoardRaw }
 
-export interface IBoard {
+interface IBoard {
   id: string,
   title: string,
   columns: Array<IColumn>
 }
-export interface IBoardRaw {
+interface IBoardRaw {
   title?: string,
   columns?: Array<IColumn>
 }
+
 class Board {
   public id: string;
   public title: string;
   public columns: Array<IColumn>;
-  constructor({ id = uuid(), title = 'TEST_BOARD', columns = [] } = {}) {
+  constructor({ id = uuid(), title = 'TEST_BOARD', columns = [] as IColumn[] } = {}) {
     this.id = id;
     this.title = title;
     this.columns = columns;
   }
 }
-module.exports = Board;
+export default Board;

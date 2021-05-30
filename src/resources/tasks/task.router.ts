@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
+import { serviceAPI } from './task.service';
 const router = require('express').Router({ mergeParams: true });
-const { serviceAPI } = require('./task.service');
 
 router.route('/').get(async (req: Request, res: Response) => {
   const tasksList = await serviceAPI.getBoardTasks(req.params['boardId']);
@@ -22,4 +22,4 @@ router.route('/:taskId').delete(async (req: Request, res: Response) => {
   await serviceAPI.deleteTask(req.params['boardId'], req.params['taskId']);
   res.status(204).json({});
 });
-module.exports = router;
+export default router

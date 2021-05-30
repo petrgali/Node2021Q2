@@ -1,6 +1,7 @@
 const uuid = require('uuid').v4;
+export { ITask, ITaskRaw }
 
-export interface ITask {
+interface ITask {
   id: string,
   title: string,
   order: number,
@@ -9,7 +10,7 @@ export interface ITask {
   boardId: string,
   columnId: string,
 }
-export interface ITaskRaw {
+interface ITaskRaw {
   title?: string,
   order?: number,
   description?: string,
@@ -17,6 +18,7 @@ export interface ITaskRaw {
   boardId?: string,
   columnId?: string,
 }
+
 class Task {
   public id: string;
   public title: string;
@@ -47,4 +49,4 @@ class Task {
     return { id, title, order, description, userId, boardId, columnId };
   }
 }
-module.exports = Task;
+export default Task

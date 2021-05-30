@@ -1,11 +1,12 @@
 const uuid = require('uuid').v4;
 
-export interface IColumn {
+export { IColumn, IColumnRaw }
+interface IColumn {
   id: string,
   title: string,
   order: number
 }
-export interface IColumnRaw {
+interface IColumnRaw {
   title: string,
   order: number
 }
@@ -19,5 +20,4 @@ class Column {
     this.order = order;
   }
 }
-
-module.exports = Column;
+export default Column

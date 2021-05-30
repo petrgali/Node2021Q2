@@ -1,8 +1,8 @@
 import { Request, Response } from 'express'
 import { IUser } from './user.model'
+import { serviceAPI } from './user.service';
 const router = require('express').Router();
 const User = require('./user.model');
-const { serviceAPI } = require('./user.service');
 
 router.route('/').get(async (_req: Request, res: Response) => {
   const users: Array<IUser> = await serviceAPI.getAll();
@@ -29,4 +29,4 @@ router.route('/:id').delete(async (req: Request, res: Response) => {
   await serviceAPI.deleteRecord(req.params['id']);
   res.status(204).json({});
 });
-module.exports = router;
+export default router

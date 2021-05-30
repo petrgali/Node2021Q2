@@ -1,10 +1,10 @@
 import { ITask, ITaskRaw } from "./task.model";
+import API from './task.memory.repository';
+import Task from './task.model';
 
-const API = require('./task.memory.repository').taskAPI;
-const Task = require('./task.model');
-const serviceAPI = {
-  getBoardTasks: (idx: string): Array<ITask> => API.getBoardTasks(idx),
-  addBoardTask: (data: ITaskRaw, id: string): ITask => {
+export const serviceAPI = {
+  getBoardTasks: (idx: string | undefined): Promise<Array<ITask>> => API.getBoardTasks(idx),
+  addBoardTask: (data: ITaskRaw, id: string | undefined): ITask => {
     const task: ITask = new Task({
       title: data.title,
       order: data.order,
@@ -16,17 +16,15 @@ const serviceAPI = {
     API.addBoardTask(task);
     return task;
   },
-  getTaskById: (boardId: string, taskId: string): ITask =>
+  getTaskById: (boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> =>
     API.getTaskById(boardId, taskId),
-  updateTask: (data: ITaskRaw, boardId: string, taskId: string): ITask => {
+  updateTask: (data: ITaskRaw, boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> => {
     const update: ITaskRaw = {
       ...data
     };
     API.updateTask(boardId, taskId, update);
     return serviceAPI.getTaskById(boardId, taskId);
   },
-  deleteTask: (_boardId: string, taskId: string): void =>
+  deleteTask: (_boardId: string | undefined, taskId: string | undefined): Promise<void> =>
     API.deleteTask(taskId)
 };
-
-module.exports = { serviceAPI };
