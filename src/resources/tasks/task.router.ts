@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { serviceAPI } from './task.service';
+
 const router = require('express').Router({ mergeParams: true });
 
 router.route('/').get(async (req: Request, res: Response) => {

@@ -1,6 +1,6 @@
-const uuid = require('uuid').v4;
-
+import { v4 as uuid } from 'uuid'
 export { IColumn, IColumnRaw }
+
 interface IColumn {
   id: string,
   title: string,

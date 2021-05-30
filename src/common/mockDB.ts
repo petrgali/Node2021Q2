@@ -12,5 +12,4 @@ const DB: IDb = {
   boards: [],
   tasks: [],
 };
-
 module.exports = DB;

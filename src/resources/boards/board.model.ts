@@ -1,5 +1,6 @@
 import { IColumn } from '../columns/columns.model'
-const uuid = require('uuid').v4;
+import { v4 as uuid } from 'uuid'
+
 export { IBoard, IBoardRaw }
 
 interface IBoard {
