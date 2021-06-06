@@ -18,9 +18,9 @@ class Board {
   public title: string;
   public columns: Array<IColumn>;
   constructor({ id = uuid(), title = 'TEST_BOARD', columns = [] as IColumn[] } = {}) {
-    this.id = id;
-    this.title = title;
-    this.columns = columns;
+    this.id = id
+    this.title = title
+    this.columns = columns
   }
 }
-export default Board;
+export default Board

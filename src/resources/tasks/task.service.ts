@@ -1,6 +1,6 @@
-import { ITask, ITaskRaw } from "./task.model";
-import API from './task.memory.repository';
-import Task from './task.model';
+import { ITask, ITaskRaw } from "./task.model"
+import API from './task.memory.repository'
+import Task from './task.model'
 
 export const serviceAPI = {
   getBoardTasks: (idx: string | undefined): Promise<Array<ITask>> => API.getBoardTasks(idx),
@@ -13,9 +13,9 @@ export const serviceAPI = {
       userId: data.userId,
       boardId: id,
       columnId: data.columnId,
-    });
-    API.addBoardTask(task);
-    return task;
+    })
+    API.addBoardTask(task)
+    return task
   },
 
   getTaskById: (boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> =>
@@ -24,11 +24,11 @@ export const serviceAPI = {
   updateTask: (data: ITaskRaw, boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> => {
     const update: ITaskRaw = {
       ...data
-    };
-    API.updateTask(boardId, taskId, update);
-    return serviceAPI.getTaskById(boardId, taskId);
+    }
+    API.updateTask(boardId, taskId, update)
+    return serviceAPI.getTaskById(boardId, taskId)
   },
 
   deleteTask: (_boardId: string | undefined, taskId: string | undefined): Promise<void> =>
     API.deleteTask(taskId)
-};
+}

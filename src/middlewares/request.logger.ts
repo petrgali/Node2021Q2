@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express"
 import { finished } from 'stream'
 import { logger } from '../services/logger'
 import { INFO } from '../common/const'

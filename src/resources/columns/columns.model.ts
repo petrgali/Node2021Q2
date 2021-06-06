@@ -15,9 +15,9 @@ class Column {
   public title: string;
   public order: number
   constructor({ id = uuid(), title = 'TEST_COLUMN', order = 0 } = {}) {
-    this.id = id;
-    this.title = title;
-    this.order = order;
+    this.id = id
+    this.title = title
+    this.order = order
   }
 }
 export default Column
