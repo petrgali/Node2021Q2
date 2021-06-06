@@ -1,7 +1,11 @@
 import fs from 'fs'
 import { ILogInfo } from '../middlewares/request.logger.interface'
 import { FatalError, LogError } from '../middlewares/error.logger.interface'
-import { INFO, ERRORS, FATAL } from '../common/config'
+import { INFO, ERRORS, FATAL, LOG_FOLDER } from '../common/config'
+
+((path: string) => {
+    if (!fs.existsSync(path)) fs.mkdirSync(path)
+})(LOG_FOLDER)
 
 const infoStream = fs.createWriteStream(INFO, { flags: "a" })
 const errorStream = fs.createWriteStream(ERRORS, { flags: 'a' })
