@@ -7,11 +7,12 @@ export interface IUser {
   password: string;
 }
 export interface IUserRaw {
+  id?: string,
   name?: string;
   login?: string;
   password?: string;
 }
-class User {
+export class User {
   public id: string;
   public name: string;
   public login: string;
@@ -27,9 +28,8 @@ class User {
     this.login = login;
     this.password = password;
   }
-  static toResponse(user: User) {
+  static toResponse(user: User): IUserRaw {
     const { id, name, login } = user;
     return { id, name, login };
   }
 }
-module.exports = User;

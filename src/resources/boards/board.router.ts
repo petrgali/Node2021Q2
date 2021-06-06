@@ -1,9 +1,10 @@
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response, NextFunction, Router } from 'express'
 import { IBoard } from './board.model'
 import { serviceAPI } from './board.service';
 import { LogError } from '../../middlewares/error.logger.interface'
 import { STATUS, MSG } from '../../common/const'
-const router = require('express').Router();
+
+const router = Router();
 
 router.route('/').get(async (_req: Request, res: Response) => {
   const boards: Array<IBoard> = await serviceAPI.getAll();
@@ -26,7 +27,11 @@ router.route('/:id').get(async (req: Request, res: Response, next: NextFunction)
 
 router.route('/:id').put(async (req: Request, res: Response) => {
   const updated: IBoard = await serviceAPI.updateRecord(req.params['id'], req.body.title);
-  res.status(updated ? STATUS.OK : 400).json(updated);
+  if (updated) {
+    res.status(STATUS.OK).json(updated)
+    return
+  }
+  res.status(STATUS.BAD_REQUEST).json({ error: MSG.BAD });
 });
 
 router.route('/:id').delete(async (req: Request, res: Response) => {
