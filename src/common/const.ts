@@ -1,4 +1,4 @@
-export { STATUS, MSG }
+export { STATUS, MSG, INFO }
 const STATUS = {
     SERVER_ERROR: 500,
     NOT_FOUND: 404,
@@ -14,3 +14,5 @@ const MSG = {
     UNCAUGHT: 'Uncaught exception raised',
     UNHANDLED: 'Unhandled rejection raised',
 }
+
+const INFO = [200, 201, 204]

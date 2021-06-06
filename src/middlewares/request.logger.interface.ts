@@ -1,12 +1,9 @@
+import { Request, Response } from 'express'
 export { ILogInfo }
 
 interface ILogInfo {
-    ip: string,
-    date: Date,
-    method: string,
-    url: string,
-    status: number,
-    params?: string,
-    body?: string,
-    time: [number, number]
+    req: Request,
+    res: Response,
+    start: [number, number],
+    date: Date
 }
