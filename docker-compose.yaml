@@ -1,0 +1,28 @@
+version: '3.5'
+services: 
+    node:
+        build: .
+        image: petrgali/rest-api
+        networks: 
+            - rs-network
+        ports: 
+            - ${PORT}:${PORT}
+        depends_on:
+            - postgres
+        environment:
+            - PORT=8080
+    postgres:
+        build: ./database/
+        image: petrgali/postgres
+        networks: 
+            - rs-network
+        ports: 
+            - ${POSTGRES_PORT}:${POSTGRES_PORT}
+        environment: 
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+networks: 
+    rs-network:
+        name: custom-network
+        driver: bridge
