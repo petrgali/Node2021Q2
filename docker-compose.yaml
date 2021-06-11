@@ -3,26 +3,28 @@ services:
   node:
     build: .
     image: petrgali/rest-api
-    restart: always
-    working_dir: /app/src
+    restart: on-failure
     networks:
       - rs-network
     ports:
       - ${PORT}:${PORT}
     depends_on:
       - postgres
+    volumes:
+      - ./logs/:/app/logs
+      - ./src/:/app/src
     environment:
       - PORT=${PORT}
-    volumes:
-      - .:/app/src
   postgres:
     build: ./database/
     image: petrgali/postgres
-    restart: always
+    restart: on-failure
     networks:
       - rs-network
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    volumes:
+      - postgres:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -31,3 +33,6 @@ networks:
   rs-network:
     name: custom-network
     driver: bridge
+volumes:
+  postgres:
+    name: postgresDB
