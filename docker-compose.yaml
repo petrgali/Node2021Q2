@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./logs/:/app/logs
+      - appvolume:/app/logs
       - ./src/:/app/src
     environment:
       - PORT=${PORT}
@@ -24,7 +24,7 @@ services:
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - postgres:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -34,5 +34,7 @@ networks:
     name: custom-network
     driver: bridge
 volumes:
-  postgres:
+  pgdata:
     name: postgresDB
+  appvolume:
+    name: appLog
