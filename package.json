@@ -8,7 +8,7 @@
   "description": "REST service starter for RS School",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon src/server.js",
+    "start": "nodemon --exitcrash",
     "dev": "ts-node src/server.ts",
     "build": "tsc",
     "doc": "jsdoc -c jsdoc.json",
