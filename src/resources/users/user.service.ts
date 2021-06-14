@@ -1,6 +1,6 @@
 import { IUser, IUserRaw } from './user.model'
-import API from './user.memory.repository';
-import taskAPI from '../tasks/task.memory.repository';
+import API from './user.memory.repository'
+import taskAPI from '../tasks/task.memory.repository'
 
 export const serviceAPI = {
   getAll: (): Promise<Array<IUser>> => API.getAll(),
@@ -8,7 +8,7 @@ export const serviceAPI = {
   getById: (idx: string | undefined): Promise<IUser | undefined> => API.getById(idx),
 
   addNewRecord: (data: IUser): void => {
-    API.addNewRecord(data);
+    API.addNewRecord(data)
   },
 
   updateRecord: (body: IUserRaw, idx: string | undefined): Promise<IUser | undefined> => {
@@ -16,13 +16,13 @@ export const serviceAPI = {
       name: body.name,
       login: body.login,
       password: body.password,
-    };
-    API.updateRecord(idx, update);
-    return serviceAPI.getById(idx);
+    }
+    API.updateRecord(idx, update)
+    return serviceAPI.getById(idx)
   },
 
   deleteRecord: (idx: string | undefined): void => {
-    taskAPI.unassignTask(idx);
-    API.deleteRecord(idx);
+    taskAPI.unassignTask(idx)
+    API.deleteRecord(idx)
   },
-};
+}

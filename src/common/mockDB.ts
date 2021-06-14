@@ -1,5 +1,5 @@
-import { IUser } from '../resources/users/user.model';
-import { IBoard } from '../resources/boards/board.model';
+import { IUser } from '../resources/users/user.model'
+import { IBoard } from '../resources/boards/board.model'
 import { ITask } from '../resources/tasks/task.model'
 
 export interface IDb {
@@ -11,5 +11,5 @@ const DB: IDb = {
   users: [],
   boards: [],
   tasks: [],
-};
-module.exports = DB;
+}
+module.exports = DB
