@@ -1,4 +1,4 @@
-import { IUser } from '../resources/users/user.model'
+import { IUser } from '../common/types'
 import { IBoard } from '../resources/boards/board.model'
 import { ITask } from '../resources/tasks/task.model'
 

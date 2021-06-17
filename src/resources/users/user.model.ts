@@ -1,18 +1,13 @@
 import { v4 as uuid } from 'uuid'
+import { IUser } from '../../common/types'
 
-export interface IUser {
-  id: string;
-  name: string;
-  login: string;
-  password: string;
-}
 export interface IUserRaw {
   id?: string,
   name?: string;
   login?: string;
   password?: string;
 }
-export class User {
+export class User implements IUser {
   public id: string;
   public name: string;
   public login: string;

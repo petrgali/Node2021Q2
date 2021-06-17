@@ -1,5 +1,4 @@
-import { Request, Response, NextFunction } from 'express'
-import express from 'express'
+import express, { Application, Request, Response, NextFunction } from 'express'
 import swaggerUI from 'swagger-ui-express'
 import path from 'path'
 import YAML from 'yamljs'
@@ -9,7 +8,7 @@ import taskRouter from './resources/tasks/task.router'
 import logger from './middlewares/index'
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'))
-const app = express()
+const app: Application = express()
 
 app.use(express.json())
 app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument))

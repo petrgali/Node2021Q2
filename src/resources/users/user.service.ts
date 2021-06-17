@@ -1,4 +1,5 @@
-import { IUser, IUserRaw } from './user.model'
+import { IUserRaw } from './user.model'
+import { IUser } from '../../common/types'
 import API from './user.memory.repository'
 import taskAPI from '../tasks/task.memory.repository'
 
