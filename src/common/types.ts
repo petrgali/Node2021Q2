@@ -1,6 +1,7 @@
-export interface IUser {
-    id: string;
-    name: string;
-    login: string;
-    password: string;
-  }
+
+export interface UserDTO {
+  // id: string ;
+  name: string;
+  login: string;
+  password: string;
+}

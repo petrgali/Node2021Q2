@@ -1,19 +1,19 @@
-import { IUserRaw } from './user.model'
-import { IUser } from '../../common/types'
+// import { IUserRaw } from '../../entities/user.entity'
+import { UserDTO } from '../../common/types'
 import API from './user.memory.repository'
 import taskAPI from '../tasks/task.memory.repository'
+import { DeleteResult } from 'typeorm'
+import User from '../../entities/user.entity'
 
 export const serviceAPI = {
-  getAll: (): Promise<Array<IUser>> => API.getAll(),
+  getAll: (): Promise<User[]> => API.getAll(),
 
-  getById: (idx: string | undefined): Promise<IUser | undefined> => API.getById(idx),
+  getById: (idx: string): Promise<User | undefined> => API.getById(idx),
 
-  addNewRecord: (data: IUser): void => {
-    API.addNewRecord(data)
-  },
+  addNewRecord: (data: UserDTO): Promise<User> => API.addNewRecord(data),
 
-  updateRecord: (body: IUserRaw, idx: string | undefined): Promise<IUser | undefined> => {
-    const update = {
+  updateRecord: (body: UserDTO, idx: string): Promise<User | undefined> => {
+    const update: UserDTO = {
       name: body.name,
       login: body.login,
       password: body.password,
@@ -22,8 +22,8 @@ export const serviceAPI = {
     return serviceAPI.getById(idx)
   },
 
-  deleteRecord: (idx: string | undefined): void => {
+  deleteRecord: (idx: string): Promise<DeleteResult> => {
     taskAPI.unassignTask(idx)
-    API.deleteRecord(idx)
+    return API.deleteRecord(idx)
   },
 }

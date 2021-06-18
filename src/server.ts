@@ -6,8 +6,7 @@ import { config } from './common/ormconfig'
 (async () => {
   try {
     const connection = await createConnection(config)
-    console.log(connection.options)
-
+    if (connection.isConnected) console.log('Succesfully connected to DB')
   } catch (err) {
     console.log("Error while connecting to database", err)
     return err

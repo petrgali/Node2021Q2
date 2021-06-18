@@ -11,7 +11,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - appvolume:/app/logs
+      - ./logs/:/app/logs
       - ./src/:/app/src
     environment:
       PORT: ${PORT}
@@ -34,6 +34,8 @@ services:
     image: dpage/pgadmin4
     container_name: pgadmin
     restart: on-failure
+    depends_on:
+      - node
     volumes:
       - ./data/pgadmin:/root/.pgadmin
     ports:
@@ -52,5 +54,3 @@ networks:
 volumes:
   pgdata:
     name: postgresDB
-  appvolume:
-    name: appLog
