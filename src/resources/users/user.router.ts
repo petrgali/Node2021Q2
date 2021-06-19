@@ -1,5 +1,5 @@
-import User from '../../entities/user.entity'
 import { NextFunction, Request, Response, Router } from 'express'
+import User from '../../entities/user.entity'
 import { serviceAPI } from './user.service'
 import { STATUS, MSG } from '../../common/const'
 import { LogError } from '../../middlewares/error.logger.interface'
@@ -9,15 +9,16 @@ const router = Router()
 router
   .route('/')
   .get(async (_req: Request, res: Response) => {
-    const users: Array<User> = await serviceAPI.getAll()
+    const users: User[] = await serviceAPI.getAll()
     res.status(STATUS.OK).json(users)
   })
 
 router
   .route('/')
   .post(async (req: Request, res: Response) => {
-    const saved = serviceAPI.addNewRecord(req.body)
-    res.status(STATUS.CREATED).json(saved)
+    const saved: User = await serviceAPI.addNewRecord(req.body)
+    const { id, name, login } = saved
+    res.status(STATUS.CREATED).json({ id, name, login })
   })
 
 router

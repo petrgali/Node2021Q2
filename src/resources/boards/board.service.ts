@@ -1,44 +1,23 @@
-import { IBoard, IBoardRaw } from './board.model'
-import { IColumn, IColumnRaw } from '../columns/columns.model'
 import API from './board.memory.repository'
 import taskAPI from '../tasks/task.memory.repository'
-import Board from './board.model'
-import Column from '../columns/columns.model'
+import { ColumnDTO } from '../../common/types'
+import Board from '../../entities/board.entity'
+import { DeleteResult } from 'typeorm'
 
 export const serviceAPI = {
-  getAll: (): Promise<Array<IBoard>> => API.getAll(),
-  
-  getById: (idx: string | undefined): Promise<IBoard> => API.getById(idx),
-  
-  addNewRecord: (title: string, data: Array<IColumnRaw>): IBoard => {
-    const columns: Array<IColumn> = data.map(
-      (item: IColumnRaw) =>
-        new Column({
-          title: item.title,
-          order: item.order,
-        })
-    )
-    const board: IBoard = new Board({
-      title: title,
-      columns,
-    })
-    API.addNewRecord(board)
-    return board
-  },
-  
-  updateRecord: async (id: string | undefined, title: string): Promise<IBoard> => {
-    const board = await serviceAPI.getById(id)
-    const { columns } = board
-    const update: IBoardRaw = {
-      title: title,
-      columns,
-    }
-    API.updateRecord(id, update)
+  getAll: (): Promise<Board[]> => API.getAll(),
+
+  getById: (idx: string): Promise<Board | undefined> => API.getById(idx),
+
+  addNewRecord: (title: string, data: ColumnDTO[]): Promise<Board | undefined> => API.addNewRecord(title, data),
+
+  updateRecord: async (id: string, title: string): Promise<Board | undefined> => {
+    API.updateRecord(id, { title: title })
     return serviceAPI.getById(id)
   },
-  
-  deleteRecord: async (idx: string | undefined): Promise<void> => {
+
+  deleteRecord: async (idx: string): Promise<DeleteResult> => {
     await taskAPI.deleteBoardTasks(idx)
-    API.deleteRecord(idx)
+    return API.deleteRecord(idx)
   },
 }
