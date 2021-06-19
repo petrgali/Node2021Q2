@@ -1,43 +1,55 @@
-import { ITask, ITaskRaw } from './task.model'
-const DB = require('../../common/mockDB').tasks
+import { DeleteResult, getRepository, getConnection } from 'typeorm'
+import { TaskDTO } from '../../common/types'
+import Task from '../../entities/task.entity'
+import Board from '../../entities/board.entity'
+import User from '../../entities/user.entity'
+import BoardColumn from '../../entities/columns.entity'
 
 const taskAPI = {
-  getBoardTasks: async (idx: string | undefined): Promise<Array<ITask>> => DB.filter((record: ITask) => record.boardId === idx),
 
-  addBoardTask: async (task: ITask): Promise<ITask> => DB.push(task),
-
-  getTaskById: async (boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> => {
-    const tasks = await taskAPI.getBoardTasks(boardId)
-    const task = tasks.find((record) => record.id === taskId)
-    return task
-  },
-
-  updateTask: async (boardId: string | undefined, taskId: string | undefined, data: ITaskRaw): Promise<void> => {
-    const task = await taskAPI.getTaskById(boardId, taskId)
-    if (task) Object.assign(task, data)
-  },
-
-  deleteTask: async (taskId: string | undefined): Promise<void> => {
-    const idx: number = DB.findIndex((task: ITask) => task.id === taskId)
-    DB.splice(idx, 1)
-  },
-
-  deleteBoardTasks: async (idx: string | undefined): Promise<void> => {
-    const records: Array<string> = []
-    DB.map((task: ITask, id: string) => {
-      if (task.boardId === idx) {
-        records.push(id)
-        return true
-      }
-      return false
+  getBoardTasks: async (idx: string): Promise<Task[]> => {
+    const task = await getRepository(Task).find({
+      where: { board: idx }
     })
-    records.map((id: string) => taskAPI.deleteTask(id))
+    if (task) return task
+    return []
   },
 
-  unassignTask: async (idx: string | undefined): Promise<void> => {
-    DB.filter((task: ITask) =>
-      task.userId === idx ? Object.assign(task, { userId: null }) : false
-    )
+  addBoardTask: async (task: TaskDTO, boardId: string): Promise<Task | undefined> => {
+    const board = await getRepository(Board).findOne(boardId)
+    const user = await getRepository(User).findOne(task.userId)
+    const column = await getRepository(BoardColumn).findOne(task.columnId)
+
+    const connection = getConnection()
+
+    const newTask = new Task()
+    newTask.title = task.title
+    newTask.order = task.order
+    newTask.description = task.description
+    newTask.board = board || null
+    newTask.column = column || null
+    newTask.user = user || null
+
+    await connection.manager.save(newTask)
+    return getRepository(Task).findOne(newTask.id, { relations: ['user', 'column', 'board'] })
   },
+
+  getTaskById: async (boardId: string, taskId: string): Promise<Task | undefined> => {
+    return getRepository(Task).findOne({
+      where: [
+        { board: boardId },
+        { id: taskId }
+      ]
+    })
+  },
+
+  updateTask: async (taskId: string, data: TaskDTO): Promise<Task | undefined> => {
+    const { title, order, description } = data
+    await getRepository(Task).update(taskId, { title, order, description })
+    return await getRepository(Task).findOne(taskId)
+  },
+
+  deleteTask: async (taskId: string): Promise<DeleteResult> =>
+    getRepository(Task).delete(taskId)
 }
 export default taskAPI

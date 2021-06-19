@@ -16,7 +16,7 @@ const boardAPI = {
     newBoard.title = title
     const saved = await connection.manager.save(newBoard)
 
-    for await (let column of data) {
+    for await (const column of data) {
       const newColumn = new BoardColumn()
       newColumn.order = column.order
       newColumn.title = column.title
@@ -29,7 +29,7 @@ const boardAPI = {
   updateRecord: async (id: string, data: BoardDTO): Promise<Board> => {
     const connection = getConnection()
     if (data.columns) {
-      for await (let column of data.columns) {
+      for await (const column of data.columns) {
         getRepository(BoardColumn).update(id, column)
       }
     } else {

@@ -31,5 +31,5 @@ export {
   UserDTO,
   TaskDTO,
   ColumnDTO,
-  BoardDTO
+  BoardDTO,
 }
