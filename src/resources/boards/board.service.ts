@@ -1,5 +1,4 @@
 import API from './board.memory.repository'
-// import taskAPI from '../tasks/task.memory.repository'
 import { ColumnDTO } from '../../common/types'
 import Board from '../../entities/board.entity'
 import { DeleteResult } from 'typeorm'
@@ -16,8 +15,5 @@ export const serviceAPI = {
     return API.getById(id)
   },
 
-  deleteRecord: async (idx: string): Promise<DeleteResult> => {
-    // await taskAPI.deleteBoardTasks(idx)
-    return API.deleteRecord(idx)
-  },
+  deleteRecord: async (idx: string): Promise<DeleteResult> => API.deleteRecord(idx)
 }

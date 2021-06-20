@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
 import { v4 as uuid } from 'uuid'
 import Board from './board.entity'
 import BoardColumn from './columns.entity'
@@ -7,7 +7,7 @@ import User from './user.entity'
 @Entity()
 class Task {
 
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn()
     id: string = uuid()
 
     @Column()
@@ -19,17 +19,15 @@ class Task {
     @Column()
     description: string
 
-    @OneToOne(() => User, { onDelete: 'SET NULL', nullable: true })
-    @JoinColumn()
-    user: User | null
+    @ManyToOne(() => User, (user: User) => user.id, { onDelete: 'SET NULL', nullable: true, eager: true })
+    userId?: string
 
-    @OneToOne(() => Board, { onDelete: 'CASCADE', nullable: true })
-    @JoinColumn()
-    board: Board | null
+    @ManyToOne(() => Board, (board: Board) => board.id, { onDelete: 'CASCADE' })
+    boardId?: string
 
-    @OneToOne(() => BoardColumn, { nullable: true })
-    @JoinColumn()
-    column: BoardColumn | null
+    @ManyToOne(() => BoardColumn, (column: BoardColumn) => column.id, { eager: true })
+    columnId?: string
+
 
 }
 

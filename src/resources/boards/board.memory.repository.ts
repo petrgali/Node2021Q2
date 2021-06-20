@@ -16,32 +16,18 @@ const boardAPI = {
     newBoard.title = title
     const saved = await connection.manager.save(newBoard)
 
-    for await (const column of data) {
+    for (const column of data) {
       const newColumn = new BoardColumn()
       newColumn.order = column.order
       newColumn.title = column.title
-      newColumn.board = newBoard
-      connection.manager.save(newColumn)
+      newColumn.board = newBoard.id
+      await connection.manager.save(newColumn)
     }
     return boardAPI.getById(saved.id)
   },
 
-  updateRecord: async (id: string, data: BoardDTO): Promise<Board> => {
-    const connection = getConnection()
-    if (data.columns) {
-      for await (const column of data.columns) {
-        getRepository(BoardColumn).update(id, column)
-      }
-    } else {
-      await connection
-        .createQueryBuilder()
-        .delete()
-        .from(BoardColumn)
-        .where("boardId = :id", { id: id })
-        .execute()
-    }
-    return (await getRepository(Board).update(id, data)).raw
-  },
+  updateRecord: async (id: string, data: BoardDTO): Promise<Board> =>
+    (await getRepository(Board).update(id, data)).raw,
 
   deleteRecord: async (idx: string): Promise<DeleteResult> =>
     getRepository(Board).delete(idx),

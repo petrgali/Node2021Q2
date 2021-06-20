@@ -9,7 +9,7 @@ const router = Router({ mergeParams: true })
 router
   .route('/')
   .get(async (req: Request, res: Response, next: NextFunction) => {
-    const tasksList: Task[] = await serviceAPI.getBoardTasks(String(req.params['boardId']))
+    const tasksList: Task[] = await serviceAPI.getBoardTasks(req.params['boardId'])
     if (tasksList) {
       res.status(STATUS.OK).json(tasksList)
       return
@@ -20,14 +20,14 @@ router
 router
   .route('/')
   .post(async (req: Request, res: Response) => {
-    const task = await serviceAPI.addBoardTask(req.body, String(req.params['boardId']))
+    const task = await serviceAPI.addBoardTask(req.body, req.params['boardId'])
     res.status(STATUS.CREATED).json(task)
   })
 
 router
   .route('/:taskId')
   .get(async (req: Request, res: Response, next: NextFunction) => {
-    const task = await serviceAPI.getTaskById(String(req.params['boardId']), String(req.params['taskId']))
+    const task = await serviceAPI.getTaskById(req.params['boardId'], req.params['taskId'])
     if (task) {
       res.status(STATUS.OK).json(task)
       return
@@ -38,14 +38,14 @@ router
 router
   .route('/:taskId')
   .put(async (req: Request, res: Response) => {
-    const task = await serviceAPI.updateTask(req.body, String(req.params['boardId']), String(req.params['taskId']))
+    const task = await serviceAPI.updateTask(req.body, String(req.params['boardId']), req.params['taskId'])
     res.status(STATUS.OK).json(task)
   })
 
 router
   .route('/:taskId')
   .delete(async (req: Request, res: Response) => {
-    await serviceAPI.deleteTask(String(req.params['boardId']), String(req.params['taskId']))
+    await serviceAPI.deleteTask(req.params['boardId'], req.params['taskId'])
     res.status(STATUS.SUCCESS).json({})
   })
 export default router

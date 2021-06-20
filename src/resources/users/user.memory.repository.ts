@@ -11,15 +11,14 @@ const userAPI = {
 
   addNewRecord: async (user: UserDTO): Promise<User> => {
     const newUser = getRepository(User).create(user)
-    const saved = getRepository(User).save(newUser)
-    return saved
+    return getRepository(User).save(newUser)
   },
 
   updateRecord: async (idx: string, data: UserDTO): Promise<User> =>
     (await getRepository(User).update(idx, data)).raw,
 
   deleteRecord: async (idx: string): Promise<DeleteResult> =>
-    getRepository(User).delete(idx),
+    await getRepository(User).delete(idx),
 }
 
 export default userAPI

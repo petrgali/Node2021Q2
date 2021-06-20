@@ -5,15 +5,17 @@ import { DeleteResult } from 'typeorm'
 
 export const serviceAPI = {
 
-  getBoardTasks: (idx: string): Promise<Task[]> => API.getBoardTasks(idx),
+  getBoardTasks: (idx: string | undefined): Promise<Task[]> => API.getBoardTasks(idx),
 
-  addBoardTask: (data: TaskDTO, id: string): Promise<Task | undefined> =>
-    API.addBoardTask(data, id),
+  addBoardTask: (data: TaskDTO, id: string | undefined): Promise<Task | undefined> => {
+    return API.addBoardTask(data, id)
+  }
+  ,
 
-  getTaskById: (boardId: string, taskId: string): Promise<Task | undefined> =>
+  getTaskById: (boardId: string | undefined, taskId: string | undefined): Promise<Task | undefined> =>
     API.getTaskById(boardId, taskId),
 
-  updateTask: (data: TaskDTO, boardId: string, taskId: string): Promise<Task | undefined> => {
+  updateTask: async (data: TaskDTO, boardId: string, taskId: string | undefined): Promise<Task | undefined> => {
     const update: TaskDTO = {
       ...data,
       boardId,
@@ -21,6 +23,6 @@ export const serviceAPI = {
     return API.updateTask(taskId, update)
   },
 
-  deleteTask: (_boardId: string, taskId: string): Promise<DeleteResult> =>
+  deleteTask: (_boardId: string | undefined, taskId: string | undefined): Promise<DeleteResult> =>
     API.deleteTask(taskId)
 }
