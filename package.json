@@ -11,6 +11,7 @@
     "start": "nodemon --exitcrash",
     "dev": "ts-node src/server.ts",
     "build": "tsc",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./src/common/ormconfig.ts",
     "doc": "jsdoc -c jsdoc.json",
     "lint": "eslint --ext  .js,.ts --fix src/",
     "test": "cross-env DEBUG=rs:* jest --testMatch \"<rootDir>/test/e2e/test/*.test.js\" --noStackTrace --runInBand",

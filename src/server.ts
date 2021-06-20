@@ -1,7 +1,7 @@
 import { PORT } from './common/config'
 import app from './app'
 import { createConnection } from 'typeorm'
-import { config } from './common/ormconfig'
+import config from './common/ormconfig'
 
 (async () => {
   try {

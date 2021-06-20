@@ -6,7 +6,7 @@ dotenv.config({
     path: path.join(__dirname, '../../.env')
 })
 
-export const config: ConnectionOptions = {
+const config: ConnectionOptions = {
     type: 'postgres',
     host: process.env['POSTGRES_HOST'],
     port: Number(process.env['POSTGRES_PORT']),
@@ -14,5 +14,10 @@ export const config: ConnectionOptions = {
     password: process.env['POSTGRES_PASSWORD'],
     database: process.env['POSTGRES_DB'],
     entities: [__dirname + '/../entities/**/*.ts'],
-    synchronize: true,
+    migrations: [__dirname + '/../migrations/*.ts'],
+    cli: {
+        migrationsDir: 'src/migrations'
+    },
+    synchronize: false,
 }
+export = config
