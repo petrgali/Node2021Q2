@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from "typeorm"
 
 export class MigrationRS1624218064981 implements MigrationInterface {
 
@@ -8,6 +8,14 @@ export class MigrationRS1624218064981 implements MigrationInterface {
             id character varying COLLATE pg_catalog."default" NOT NULL,
             title character varying COLLATE pg_catalog."default" NOT NULL,
             CONSTRAINT "PK_865a0f2e22c140d261b1df80eb1" PRIMARY KEY (id)
+        )`)
+        await queryRunner.query(`CREATE TABLE IF NOT EXISTS public."user"
+        (
+            id character varying COLLATE pg_catalog."default" NOT NULL,
+            name character varying COLLATE pg_catalog."default" NOT NULL,
+            login character varying COLLATE pg_catalog."default" NOT NULL,
+            password character varying COLLATE pg_catalog."default" NOT NULL,
+            CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id)
         )`)
         await queryRunner.query(`CREATE TABLE IF NOT EXISTS public.board_column
     (
@@ -44,14 +52,7 @@ export class MigrationRS1624218064981 implements MigrationInterface {
             ON UPDATE NO ACTION
             ON DELETE CASCADE
     )`)
-        await queryRunner.query(`CREATE TABLE IF NOT EXISTS public."user"
-    (
-        id character varying COLLATE pg_catalog."default" NOT NULL,
-        name character varying COLLATE pg_catalog."default" NOT NULL,
-        login character varying COLLATE pg_catalog."default" NOT NULL,
-        password character varying COLLATE pg_catalog."default" NOT NULL,
-        CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY (id)
-    )`)
+
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
