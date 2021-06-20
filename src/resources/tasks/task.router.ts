@@ -38,7 +38,7 @@ router
 router
   .route('/:taskId')
   .put(async (req: Request, res: Response) => {
-    const task = await serviceAPI.updateTask(req.body, String(req.params['boardId']), req.params['taskId'])
+    const task = await serviceAPI.updateTask(req.body, req.params['boardId'], req.params['taskId'])
     res.status(STATUS.OK).json(task)
   })
 
