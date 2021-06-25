@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from 'express'
 import { serviceAPI } from './task.service'
 import { STATUS, MSG } from '../../common/const'
-import { LogError } from '../../middlewares/error.logger.interface'
+import { LogError } from '../../middlewares/log/error.logger.interface'
 import Task from '../../entities/task.entity'
 
 const router = Router({ mergeParams: true })

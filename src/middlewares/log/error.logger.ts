@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
-import { logger } from '../services/logger'
+import { logger } from '../../services/logger'
 import { FatalError, LogError } from './error.logger.interface'
-import { STATUS } from '../common/const'
+import { STATUS } from '../../common/const'
 
 const uncaught = process.on('uncaughtException', (err: Error) => {
    logger.FATAL(new FatalError(STATUS.SERVER_ERROR, err.message))

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express"
 import { finished } from 'stream'
-import { logger } from '../services/logger'
-import { INFO } from '../common/const'
+import { logger } from '../../services/logger'
+import { INFO } from '../../common/const'
 
 
 export const requestDetails = (req: Request, res: Response, next: NextFunction): void => {

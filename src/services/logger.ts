@@ -1,6 +1,6 @@
 import fs from 'fs'
-import { ILogInfo } from '../middlewares/request.logger.interface'
-import { FatalError, LogError } from '../middlewares/error.logger.interface'
+import { ILogInfo } from '../middlewares/log/request.logger.interface'
+import { FatalError, LogError } from '../middlewares/log/error.logger.interface'
 import { INFO, ERRORS, FATAL, LOG_FOLDER } from '../common/config'
 
 ((path: string) => {

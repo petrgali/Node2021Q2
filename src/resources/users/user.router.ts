@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import User from '../../entities/user.entity'
 import { serviceAPI } from './user.service'
 import { STATUS, MSG } from '../../common/const'
-import { LogError } from '../../middlewares/error.logger.interface'
+import { LogError } from '../../middlewares/log/error.logger.interface'
 
 const router = Router()
 
