@@ -19,5 +19,6 @@ const config: ConnectionOptions = {
         migrationsDir: 'src/migrations'
     },
     synchronize: false,
+    migrationsRun: true
 }
 export = config

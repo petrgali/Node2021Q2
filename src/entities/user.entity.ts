@@ -8,7 +8,7 @@ class User {
   id: string = uuid();
 
   @Column()
-  name: string;
+  name: string = 'default_name';
 
   @Column()
   login: string;
