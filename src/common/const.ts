@@ -5,7 +5,9 @@ const STATUS = {
     BAD_REQUEST: 400,
     OK: 200,
     CREATED: 201,
-    SUCCESS: 204
+    SUCCESS: 204,
+    UNATHORIZED: 401,
+    FORBIDDEN: 403
 }
 const MSG = {
     INTERNAL: 'Internal server error',
@@ -13,6 +15,9 @@ const MSG = {
     BAD: 'Bad request. Check provided data!',
     UNCAUGHT: 'Uncaught exception raised',
     UNHANDLED: 'Unhandled rejection raised',
+    USER_NOT_FOUND: 'Requested user not found',
+    UNATHORIZED: 'Access unathorized',
+    PWD_FAILED: "Password doesn't match"
 }
 
 const INFO = [200, 201, 204]

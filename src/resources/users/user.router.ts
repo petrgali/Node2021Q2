@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express'
+import bcrypt from 'bcryptjs'
 import User from '../../entities/user.entity'
 import { serviceAPI } from './user.service'
 import { STATUS, MSG } from '../../common/const'
@@ -16,7 +17,10 @@ router
 router
   .route('/')
   .post(async (req: Request, res: Response) => {
-    const saved: User = await serviceAPI.addNewRecord(req.body)
+    const saved: User = await serviceAPI.addNewRecord({
+      ...req.body,
+      password: bcrypt.hashSync(req.body.password, 10)
+    })
     const { id, name, login } = saved
     res.status(STATUS.CREATED).json({ id, name, login })
   })

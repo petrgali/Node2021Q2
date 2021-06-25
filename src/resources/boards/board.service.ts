@@ -1,4 +1,4 @@
-import API from './board.memory.repository'
+import API from './board.repository'
 import { ColumnDTO } from '../../common/types'
 import Board from '../../entities/board.entity'
 import { DeleteResult } from 'typeorm'
