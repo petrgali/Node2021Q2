@@ -6,6 +6,7 @@ import userRouter from './resources/users/user.router'
 import boardRouter from './resources/boards/board.router'
 import taskRouter from './resources/tasks/task.router'
 import loginRouter from './resources/login/login.router'
+import { sessionValidate } from './middlewares/session.validate'
 import logger from './middlewares/index'
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'))
@@ -22,6 +23,7 @@ app.use('/', (req: Request, res: Response, next: NextFunction) => {
   next()
 })
 app.use('/login', loginRouter)
+app.use(sessionValidate)
 app.use('/users', userRouter)
 app.use('/boards', boardRouter)
 app.use('/boards/:boardId/tasks', taskRouter)

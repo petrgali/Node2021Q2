@@ -1,3 +1,5 @@
+import { JwtPayload } from 'jsonwebtoken'
+
 interface UserDTO {
   id?: string;
   name: string;
@@ -26,10 +28,15 @@ interface BoardDTO {
   title: string,
   columns?: Array<ColumnDTO>
 }
+interface Token extends JwtPayload {
+  userId: string,
+  login: string,
+}
 
 export {
   UserDTO,
   TaskDTO,
   ColumnDTO,
   BoardDTO,
+  Token
 }

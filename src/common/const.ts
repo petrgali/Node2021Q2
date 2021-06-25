@@ -17,7 +17,8 @@ const MSG = {
     UNHANDLED: 'Unhandled rejection raised',
     USER_NOT_FOUND: 'Requested user not found',
     UNATHORIZED: 'Access unathorized',
-    PWD_FAILED: "Password doesn't match"
+    PWD_FAILED: "Password doesn't match",
+    NO_TOKEN: 'No token provided'
 }
 
 const INFO = [200, 201, 204]
