@@ -33,7 +33,7 @@ and task testing much more easier
 
 ## Running
 
-First of all start the app
+In this task all migrations runs at app startup, so all You got to do just run the command:
 ```
 docker-compose up
 ```
