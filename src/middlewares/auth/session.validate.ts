@@ -20,10 +20,9 @@ export const sessionValidate = async (req: Request, res: Response, next: NextFun
             const { userId } = decoded as Token
             const user = await serviceAPI.findById(userId)
             if (user) {
-                req.headers.authorization = 'Bearer ' + token
                 next()
             } else {
-                throw (new LogError(STATUS.UNATHORIZED, MSG.USER_NOT_FOUND, { req, res }))
+                throw (new LogError(STATUS.FORBIDDEN, MSG.USER_NOT_FOUND, { req, res }))
             }
         } else {
             throw (new LogError(STATUS.UNATHORIZED, MSG.PWD_FAILED, { req, res }))

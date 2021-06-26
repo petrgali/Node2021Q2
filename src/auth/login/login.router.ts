@@ -30,7 +30,7 @@ router
             next(new LogError(STATUS.UNATHORIZED, MSG.PWD_FAILED, { req, res }))
             return
         }
-        next(new LogError(STATUS.UNATHORIZED, MSG.USER_NOT_FOUND, { req, res }))
+        next(new LogError(STATUS.FORBIDDEN, MSG.USER_NOT_FOUND, { req, res }))
         return
     })
 
