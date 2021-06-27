@@ -1,34 +1,27 @@
-import { ITask, ITaskRaw } from "./task.model"
 import API from './task.memory.repository'
-import Task from './task.model'
+import Task from '../../entities/task.entity'
+import { TaskDTO } from "../../common/types"
+import { DeleteResult } from 'typeorm'
 
 export const serviceAPI = {
-  getBoardTasks: (idx: string | undefined): Promise<Array<ITask>> => API.getBoardTasks(idx),
 
-  addBoardTask: (data: ITaskRaw, id: string | undefined): ITask => {
-    const task: ITask = new Task({
-      title: data.title,
-      order: data.order,
-      description: data.description,
-      userId: data.userId,
-      boardId: id,
-      columnId: data.columnId,
-    })
-    API.addBoardTask(task)
-    return task
-  },
+  getBoardTasks: (idx: string | undefined): Promise<Task[]> =>
+    API.getBoardTasks(idx),
 
-  getTaskById: (boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> =>
+  addBoardTask: (data: TaskDTO, id: string | undefined): Promise<Task | undefined> =>
+    API.addBoardTask(data, id),
+
+  getTaskById: (boardId: string | undefined, taskId: string | undefined): Promise<Task | undefined> =>
     API.getTaskById(boardId, taskId),
 
-  updateTask: (data: ITaskRaw, boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> => {
-    const update: ITaskRaw = {
-      ...data
+  updateTask: async (data: TaskDTO, boardId: string | undefined, taskId: string | undefined): Promise<Task | undefined> => {
+    const update: TaskDTO = {
+      ...data,
+      boardId,
     }
-    API.updateTask(boardId, taskId, update)
-    return serviceAPI.getTaskById(boardId, taskId)
+    return API.updateTask(taskId, update)
   },
 
-  deleteTask: (_boardId: string | undefined, taskId: string | undefined): Promise<void> =>
+  deleteTask: (_boardId: string | undefined, taskId: string | undefined): Promise<DeleteResult> =>
     API.deleteTask(taskId)
 }

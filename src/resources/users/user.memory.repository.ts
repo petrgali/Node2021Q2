@@ -1,23 +1,24 @@
-import { IUser, IUserRaw } from './user.model'
-
-const DB = require('../../common/mockDB').users
+import { DeleteResult, getRepository } from 'typeorm'
+import User from '../../entities/user.entity'
+import { UserDTO } from '../../common/types'
 
 const userAPI = {
-  getAll: async (): Promise<IUser[]> => DB,
-  
-  addNewRecord: async (user: IUser): Promise<number> => DB.push(user),
-  
-  getById: async (idx: string | undefined): Promise<IUser> => DB.find((user: IUser) => user.id === idx),
-  
-  updateRecord: async (idx: string | undefined, data: IUserRaw): Promise<void> => {
-    const user = await userAPI.getById(idx)
-    if (user) Object.assign(user, data)
+  getAll: async (): Promise<User[]> =>
+    getRepository(User).find(),
+
+  getById: async (idx: string): Promise<User | undefined> =>
+    getRepository(User).findOne(idx),
+
+  addNewRecord: async (user: UserDTO): Promise<User> => {
+    const newUser = getRepository(User).create(user)
+    return getRepository(User).save(newUser)
   },
-  
-  deleteRecord: async (idx: string | undefined): Promise<void> => {
-    const index = DB.findIndex((record: IUser) => record.id === idx)
-    DB.splice(index, 1)
-  },
+
+  updateRecord: async (idx: string, data: UserDTO): Promise<User> =>
+    (await getRepository(User).update(idx, data)).raw,
+
+  deleteRecord: async (idx: string): Promise<DeleteResult> =>
+    await getRepository(User).delete(idx),
 }
 
 export default userAPI

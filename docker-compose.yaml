@@ -11,16 +11,17 @@ services:
     depends_on:
       - postgres
     volumes:
-      - appvolume:/app/logs
+      - ./logs/:/app/logs
       - ./src/:/app/src
     environment:
-      - PORT=${PORT}
+      PORT: ${PORT}
   postgres:
     build: ./database/
     image: petrgali/postgres
     restart: on-failure
     networks:
       - rs-network
+      - test-network
     ports:
       - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
@@ -29,12 +30,27 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+  pgAdmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    restart: on-failure
+    depends_on:
+      - node
+    volumes:
+      - ./data/pgadmin:/root/.pgadmin
+    ports:
+      - '8080:80'
+    env_file:
+      - docker.env
+    networks:
+      - test-network
 networks:
   rs-network:
     name: custom-network
     driver: bridge
+  test-network:
+    name: db-network
+    driver: bridge
 volumes:
   pgdata:
     name: postgresDB
-  appvolume:
-    name: appLog

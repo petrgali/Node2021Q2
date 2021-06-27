@@ -1,43 +1,37 @@
-import { ITask, ITaskRaw } from './task.model'
-const DB = require('../../common/mockDB').tasks
+import { DeleteResult, getRepository } from 'typeorm'
+import { TaskDTO } from '../../common/types'
+import Task from '../../entities/task.entity'
 
 const taskAPI = {
-  getBoardTasks: async (idx: string | undefined): Promise<Array<ITask>> => DB.filter((record: ITask) => record.boardId === idx),
 
-  addBoardTask: async (task: ITask): Promise<ITask> => DB.push(task),
+  getBoardTasks: async (idx: string | undefined): Promise<Task[]> =>
+    await getRepository(Task).find({
+      where: { boardId: idx }
+    }),
 
-  getTaskById: async (boardId: string | undefined, taskId: string | undefined): Promise<ITask | undefined> => {
-    const tasks = await taskAPI.getBoardTasks(boardId)
-    const task = tasks.find((record) => record.id === taskId)
+  addBoardTask: async (task: TaskDTO, boardId: string | undefined): Promise<Task | undefined> => {
+    const { title, order, description, columnId, userId } = task
+    const newTask = getRepository(Task)
+      .create({ title, order, description, columnId, userId, boardId })
+    await getRepository(Task).save(newTask)
+    return taskAPI.getTaskById(boardId, newTask.id)
+  },
+
+  getTaskById: async (boardId: string | undefined, taskId: string | undefined): Promise<Task | undefined> => {
+    const task = await getRepository(Task).findOne(taskId)
+    if (task && boardId !== 'undefined') {
+      task.boardId = boardId
+    }
     return task
   },
 
-  updateTask: async (boardId: string | undefined, taskId: string | undefined, data: ITaskRaw): Promise<void> => {
-    const task = await taskAPI.getTaskById(boardId, taskId)
-    if (task) Object.assign(task, data)
+  updateTask: async (taskId: string | undefined, data: TaskDTO): Promise<Task | undefined> => {
+    const { title, order, description, boardId } = data
+    await getRepository(Task).update(String(taskId), { title, order, description, boardId })
+    return await getRepository(Task).findOne(taskId)
   },
 
-  deleteTask: async (taskId: string | undefined): Promise<void> => {
-    const idx: number = DB.findIndex((task: ITask) => task.id === taskId)
-    DB.splice(idx, 1)
-  },
-
-  deleteBoardTasks: async (idx: string | undefined): Promise<void> => {
-    const records: Array<string> = []
-    DB.map((task: ITask, id: string) => {
-      if (task.boardId === idx) {
-        records.push(id)
-        return true
-      }
-      return false
-    })
-    records.map((id: string) => taskAPI.deleteTask(id))
-  },
-
-  unassignTask: async (idx: string | undefined): Promise<void> => {
-    DB.filter((task: ITask) =>
-      task.userId === idx ? Object.assign(task, { userId: null }) : false
-    )
-  },
+  deleteTask: async (taskId: string | undefined): Promise<DeleteResult> =>
+    await getRepository(Task).delete(String(taskId))
 }
 export default taskAPI
