@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import { UserDTO } from './dto/create.user.dto';
+import User from './users.entity';
 import { UsersService } from './users.service';
 import { IUsers } from './interfaces/users.interface'
 
@@ -12,20 +12,22 @@ export class UsersController {
         return this.usersService.findAll()
     }
 
-    @Post()
-    create(@Body() createUser: UserDTO): Partial<UserDTO> {
-        return UserDTO.toResponse(createUser)
+    @Get(':id')
+    findOne(@Param('id') id: string): IUsers {
+        return this.usersService.findOne(id)
     }
 
-    @Get(':id')
-    findOne(): Partial<UserDTO> {
-        const user = new UserDTO()
-        return UserDTO.toResponse(user)
+    @Post()
+    create(@Body() createUser: User): IUsers {
+        const newUser = this.usersService.createRecord(new User(createUser))
+        return User.toResponse(newUser)
     }
+
     @Put()
     updateUser(): string {
         return 'user updated'
     }
+
     @Delete(':id')
     deleteUser(@Param('id') id: string): string {
         return `user ${id} is deleted`
