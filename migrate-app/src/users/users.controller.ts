@@ -1,25 +1,27 @@
 import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
-import User from './users.entity';
+import { User } from './users.entity';
 import { UsersService } from './users.service';
-import { IUsers } from './interfaces/users.interface'
+import { CreateUserDTO } from './dto/create.user.dto'
 
 @Controller('users')
 export class UsersController {
+
     constructor(private readonly usersService: UsersService) { }
 
     @Get()
-    findAll(): IUsers[] {
+    findAll(): Promise<User[]> {
         return this.usersService.findAll()
-    }
+    };
 
     @Get(':id')
-    findOne(@Param('id') id: string): IUsers {
-        return this.usersService.findOne(id)
+    async findOne(@Param('id') id: string): Promise<Partial<User>> {
+        const user = await this.usersService.findOne(id)
+        return User.toResponse(user)
     }
 
     @Post()
-    create(@Body() createUser: User): IUsers {
-        const newUser = this.usersService.createRecord(new User(createUser))
+    async create(@Body() createUser: CreateUserDTO): Promise<Partial<User>> {
+        const newUser = await this.usersService.create(createUser)
         return User.toResponse(newUser)
     }
 

@@ -2,7 +2,7 @@ import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
 import { v4 as uuid } from 'uuid'
 import Board from './board.entity'
 import BoardColumn from './columns.entity'
-import User from '../users/users.entity'
+import { User } from '../users/users.entity'
 
 @Entity()
 class Task {
