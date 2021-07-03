@@ -9,6 +9,8 @@ import { User } from './resources/users/users.entity'
 import { Board } from './resources/boards/boards.entity';
 import { BoardColumn } from './resources/columns/columns.entity';
 import { BoardsModule } from './resources/boards/boards.module';
+import { TasksModule } from './resources/tasks/tasks.module';
+import { Task } from './resources/tasks/tasks.entity';
 
 @Module({
   imports: [
@@ -25,13 +27,14 @@ import { BoardsModule } from './resources/boards/boards.module';
         port: +configService.get('database.port'),
         username: configService.get('database.username'),
         password: configService.get('database.password'),
-        entities: [User, Board, BoardColumn],
+        entities: [User, Board, BoardColumn, Task],
         synchronize: true
       }),
       inject: [ConfigService]
     }),
     UsersModule,
-    BoardsModule
+    BoardsModule,
+    TasksModule
   ],
   controllers: [AppController],
   providers: [AppService],

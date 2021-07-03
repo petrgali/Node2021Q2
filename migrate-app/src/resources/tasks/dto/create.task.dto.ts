@@ -1,6 +1,6 @@
 export interface CreateTaskDTO {
 
     title?: string;
-    order?: string;
+    order?: number;
     description?: string
 }
