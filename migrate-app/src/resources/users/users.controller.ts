@@ -9,8 +9,9 @@ export class UsersController {
     constructor(private readonly usersService: UsersService) { }
 
     @Get()
-    findAll(): Promise<User[]> {
-        return this.usersService.findAll()
+    async findAll(): Promise<Partial<User>[]> {
+        const usersList = await this.usersService.findAll()
+        return usersList.map(User.toResponse)
     };
 
     @Get(':id')
@@ -25,13 +26,14 @@ export class UsersController {
         return User.toResponse(newUser)
     }
 
-    @Put()
-    updateUser(): string {
-        return 'user updated'
+    @Put(':id')
+    async update(@Body() updateUser: CreateUserDTO, @Param('id') id: string): Promise<Partial<User>> {
+        const updated = await this.usersService.update(id, updateUser)
+        return User.toResponse(updated)
     }
 
     @Delete(':id')
-    deleteUser(@Param('id') id: string): string {
-        return `user ${id} is deleted`
+    deleteUser(@Param('id') id: string): Promise<void> {
+        return this.usersService.delete(id)
     }
 }

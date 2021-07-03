@@ -1,9 +1,9 @@
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm'
 import { v4 as uuid } from 'uuid'
-import BoardColumn from './columns.entity'
+import { BoardColumn } from '../columns/columns.entity'
 
 @Entity()
-class Board {
+export class Board {
 
     @PrimaryColumn()
     id: string = uuid();
@@ -13,6 +13,5 @@ class Board {
 
     @OneToMany(() => BoardColumn, (column: BoardColumn) => column.board)
     columns: BoardColumn[]
-}
 
-export default Board
+}

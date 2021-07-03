@@ -11,7 +11,6 @@ services:
     depends_on:
       - postgres
     volumes:
-      - ./logs/:/app/logs
       - ./src/:/app/src
     environment:
       PORT: ${PORT}
@@ -22,10 +21,10 @@ services:
     networks:
       - rs-network
       - test-network
-    ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -37,8 +36,6 @@ services:
     restart: on-failure
     depends_on:
       - node
-    volumes:
-      - ./data/pgadmin:/root/.pgadmin
     ports:
       - '8080:80'
     environment:

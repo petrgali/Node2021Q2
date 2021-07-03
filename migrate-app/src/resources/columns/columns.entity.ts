@@ -1,9 +1,9 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm'
 import { v4 as uuid } from 'uuid'
-import Board from './board.entity'
+import { Board } from '../boards/boards.entity'
 
 @Entity()
-class BoardColumn {
+export class BoardColumn {
 
     @PrimaryColumn()
     id: string = uuid()
@@ -16,6 +16,5 @@ class BoardColumn {
 
     @ManyToOne(() => Board, (board: Board) => board.id, { onDelete: "CASCADE" })
     board: string
-}
 
-export default BoardColumn
+}
