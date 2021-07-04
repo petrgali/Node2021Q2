@@ -1,29 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcryptjs';
 import { CreateUserDTO } from './dto/create.user.dto';
 import { User } from './users.entity';
-import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) { }
+  ) {}
 
   async findAll(): Promise<User[]> {
-    return this.userRepository.find();
+    return await this.userRepository.find();
   }
 
-  async findOne(id: string): Promise<User> {
-    return this.userRepository.findOne(id);
+  async findOne(id: string): Promise<User | undefined> {
+    return await this.userRepository.findOne(id);
   }
 
   async create(data: CreateUserDTO): Promise<User> {
     const newUser = new User();
     Object.assign(newUser, data);
-    return this.userRepository.save(newUser);
+    return await this.userRepository.save(newUser);
   }
 
   async update(id: string, data: CreateUserDTO): Promise<User> {

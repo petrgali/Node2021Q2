@@ -9,7 +9,6 @@ import {
   NotFoundException,
   BadRequestException,
 } from '@nestjs/common';
-import { DeleteResult } from 'typeorm';
 import { Board } from './boards.entity';
 import { CreateBoardDTO } from './dto/create.board.dto';
 import { BoardsService } from './boards.service';
@@ -46,7 +45,7 @@ export class BoardsController {
   }
 
   @Delete(':id')
-  async delete(@Param('id') id: string): Promise<DeleteResult> {
-    return this.boardsService.delete(id);
+  async delete(@Param('id') id: string): Promise<void> {
+    await this.boardsService.delete(id);
   }
 }

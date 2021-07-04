@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Task } from './tasks.entity';
 import { CreateTaskDTO } from './dto/create.task.dto';
 
@@ -15,7 +15,7 @@ export class TasksService {
     return await this.tasksRepository.find({ where: { boardId: id } });
   }
 
-  async findOne(boardId: string, taskId: string): Promise<Task> {
+  async findOne(boardId: string, taskId: string): Promise<Task | undefined> {
     const task = await this.tasksRepository.findOne(taskId);
     if (task && boardId !== 'undefined') {
       task.boardId = boardId;
@@ -28,7 +28,7 @@ export class TasksService {
     Object.assign(newTask, task);
     newTask.boardId = boardId;
     await this.tasksRepository.save(newTask);
-    return this.findOne(boardId, newTask.id);
+    return newTask;
   }
 
   async update(
@@ -40,7 +40,7 @@ export class TasksService {
     return (await this.tasksRepository.update(taskId, update)).raw;
   }
 
-  async delete(id: string): Promise<DeleteResult> {
-    return await this.tasksRepository.delete(id);
+  async delete(id: string): Promise<void> {
+    await this.tasksRepository.delete(id);
   }
 }

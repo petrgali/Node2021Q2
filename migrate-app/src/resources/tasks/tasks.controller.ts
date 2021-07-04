@@ -11,7 +11,6 @@ import {
 import { TasksService } from './tasks.service';
 import { CreateTaskDTO } from './dto/create.task.dto';
 import { Task } from './tasks.entity';
-import { DeleteResult } from 'typeorm';
 
 @Controller('boards/:boardId/tasks')
 export class TasksController {
@@ -24,9 +23,12 @@ export class TasksController {
     throw new NotFoundException('Tasks not found');
   }
 
-  @Get(':taskId')
-  async findOne(@Param() params): Promise<Task> {
-    const task = await this.taskService.findOne(params.boardId, params.taskId);
+  @Get(':id')
+  async findOne(@Param() params: Partial<Task>): Promise<Task> {
+    const task = await this.taskService.findOne(
+      String(params.boardId),
+      String(params.id),
+    );
     if (task) return task;
     throw new NotFoundException('Task not found');
   }
@@ -39,16 +41,20 @@ export class TasksController {
     return this.taskService.create(createTask, boardId);
   }
 
-  @Put(':taskId')
+  @Put(':id')
   async update(
     @Body() updateTask: CreateTaskDTO,
-    @Param() params,
+    @Param() params: Partial<Task>,
   ): Promise<Task> {
-    return this.taskService.update(updateTask, params.boardId, params.taskId);
+    return this.taskService.update(
+      updateTask,
+      String(params.boardId),
+      String(params.id),
+    );
   }
 
   @Delete(':taskId')
-  async delete(@Param('taskId') taskId: string): Promise<DeleteResult> {
-    return this.taskService.delete(taskId);
+  async delete(@Param('taskId') taskId: string): Promise<void> {
+    await this.taskService.delete(taskId);
   }
 }
