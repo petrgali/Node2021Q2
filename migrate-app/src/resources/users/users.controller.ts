@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import {
+    Controller,
+    Get,
+    Post,
+    Put,
+    Delete,
+    Body,
+    Param,
+    NotFoundException,
+    BadRequestException
+} from '@nestjs/common';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 import { CreateUserDTO } from './dto/create.user.dto'
@@ -17,7 +27,8 @@ export class UsersController {
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<Partial<User>> {
         const user = await this.usersService.findOne(id)
-        return User.toResponse(user)
+        if (user) return User.toResponse(user)
+        throw new NotFoundException('User not found')
     }
 
     @Post()
@@ -29,11 +40,12 @@ export class UsersController {
     @Put(':id')
     async update(@Body() updateUser: CreateUserDTO, @Param('id') id: string): Promise<Partial<User>> {
         const updated = await this.usersService.update(id, updateUser)
-        return User.toResponse(updated)
+        if (updated) return User.toResponse(updated)
+        throw new BadRequestException('Bad request')
     }
 
     @Delete(':id')
-    deleteUser(@Param('id') id: string): Promise<void> {
+    async deleteUser(@Param('id') id: string): Promise<void> {
         return this.usersService.delete(id)
     }
 }

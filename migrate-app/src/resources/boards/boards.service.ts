@@ -38,7 +38,7 @@ export class BoardsService {
     };
 
     async update(id: string, data: CreateBoardDTO): Promise<Board> {
-        return (await this.boardRepository.update(id, data)).raw
+        return (await this.boardRepository.update(id, { title: data.title })).raw
     };
 
     async delete(id: string): Promise<DeleteResult> {

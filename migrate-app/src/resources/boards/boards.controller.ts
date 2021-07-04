@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Put, Delete, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, NotFoundException, BadRequestException } from '@nestjs/common';
 import { DeleteResult } from 'typeorm';
 import { Board } from './boards.entity';
 import { CreateBoardDTO } from './dto/create.board.dto';
@@ -10,27 +10,31 @@ export class BoardsController {
     constructor(private readonly boardsService: BoardsService) { }
 
     @Get()
-    findAll(): Promise<Board[]> {
+    async findAll(): Promise<Board[]> {
         return this.boardsService.findAll()
     };
 
     @Get(':id')
-    findOne(@Param('id') id: string): Promise<Board> {
-        return this.boardsService.findOne(id)
+    async findOne(@Param('id') id: string): Promise<Board> {
+        const record = await this.boardsService.findOne(id)
+        if (record) return record
+        throw new NotFoundException('Board not found')
     };
 
     @Post()
-    create(@Body() createBoard: CreateBoardDTO): Promise<Board> {
+    async create(@Body() createBoard: CreateBoardDTO): Promise<Board> {
         return this.boardsService.create(createBoard)
     };
 
     @Put(':id')
-    update(@Body() updateBoard: CreateBoardDTO, @Param('id') id: string): Promise<Board> {
-        return this.boardsService.update(id, updateBoard)
+    async update(@Body() updateBoard: CreateBoardDTO, @Param('id') id: string): Promise<Board> {
+        const updated = await this.boardsService.update(id, updateBoard)
+        if (updated) return updated
+        throw new BadRequestException('Bad request')
     };
 
     @Delete(':id')
-    delete(@Param('id') id: string): Promise<DeleteResult> {
+    async delete(@Param('id') id: string): Promise<DeleteResult> {
         return this.boardsService.delete(id)
     }
 

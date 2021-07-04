@@ -17,7 +17,7 @@ export class TasksService {
 
     async findOne(boardId: string, taskId: string): Promise<Task> {
         const task = await this.tasksRepository.findOne(taskId)
-        if (task && boardId) {
+        if (task && boardId !== "undefined") {
             task.boardId = boardId
         }
         return task
@@ -26,6 +26,7 @@ export class TasksService {
     async create(task: CreateTaskDTO, boardId: string): Promise<Task> {
         const newTask = new Task()
         Object.assign(newTask, task)
+        newTask.boardId = boardId
         await this.tasksRepository.save(newTask)
         return this.findOne(boardId, newTask.id)
     };
