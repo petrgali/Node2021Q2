@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import * as bcrypt from 'bcryptjs';
 
 @Entity()
 export class User {
@@ -14,6 +15,11 @@ export class User {
 
   @Column()
   password: string;
+
+  @BeforeInsert()
+  hashPassword() {
+    this.password = bcrypt.hashSync(this.password, 10);
+  }
 
   static toResponse(user: User): Partial<User> {
     const { id, name, login } = user;
