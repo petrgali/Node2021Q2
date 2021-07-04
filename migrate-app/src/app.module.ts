@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config'
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import configuration from './common/configuration'
+import configuration from './common/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './resources/users/users.module';
-import { User } from './resources/users/users.entity'
+import { User } from './resources/users/users.entity';
 import { Board } from './resources/boards/boards.entity';
 import { BoardColumn } from './resources/columns/columns.entity';
 import { BoardsModule } from './resources/boards/boards.module';
@@ -16,7 +16,7 @@ import { Task } from './resources/tasks/tasks.entity';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [configuration]
+      load: [configuration],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -28,15 +28,15 @@ import { Task } from './resources/tasks/tasks.entity';
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         entities: [User, Board, BoardColumn, Task],
-        synchronize: true
+        synchronize: true,
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     UsersModule,
     BoardsModule,
-    TasksModule
+    TasksModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
