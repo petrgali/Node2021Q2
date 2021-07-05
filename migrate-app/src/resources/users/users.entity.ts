@@ -17,8 +17,8 @@ export class User {
   password: string;
 
   @BeforeInsert()
-  hashPassword() {
-    this.password = bcrypt.hashSync(this.password, 10);
+  hashPassword(pwd: string) {
+    this.password = bcrypt.hashSync(pwd, 10);
   }
 
   static toResponse(user: User): Partial<User> {
