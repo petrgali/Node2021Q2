@@ -28,7 +28,7 @@ import { Task } from './resources/tasks/tasks.entity';
         username: configService.get('database.username'),
         password: configService.get('database.password'),
         entities: [User, Board, BoardColumn, Task],
-        synchronize: true,
+        synchronize: false,
       }),
       inject: [ConfigService],
     }),

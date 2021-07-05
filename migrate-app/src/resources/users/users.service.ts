@@ -20,6 +20,10 @@ export class UsersService {
     return await this.userRepository.findOne(id);
   }
 
+  async findByLogin(login: string): Promise<User | undefined> {
+    return await this.userRepository.findOne({ where: { login: login } });
+  }
+
   async create(data: CreateUserDTO): Promise<User> {
     const newUser = new User();
     Object.assign(newUser, data);
