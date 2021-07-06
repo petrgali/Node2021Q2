@@ -7,7 +7,7 @@ import configuration from './configuration';
 
 const conn = configuration();
 
-const config: ConnectionOptions = {
+const config: ConnectionOptions[] = [{
   type: 'postgres',
   host: conn.database.host,
   port: Number(conn.database.port),
@@ -15,12 +15,30 @@ const config: ConnectionOptions = {
   password: conn.database.password,
   database: conn.database.database,
   entities: [User, Board, BoardColumn, Task],
-  migrations: [__dirname + '/../migrations/*.ts'],
+  migrations: [__dirname + '/../migrations/database/*.ts'],
   cli: {
-    migrationsDir: 'src/migrations',
+    migrationsDir: 'src/migrations/database',
   },
   synchronize: false,
   migrationsRun: false,
-};
+  name: 'database'
+},
+{
+  type: 'postgres',
+  host: conn.database.host,
+  port: Number(conn.database.port),
+  username: conn.database.username,
+  password: conn.database.password,
+  database: conn.database.database,
+  entities: [User, Board, BoardColumn, Task],
+  migrations: [__dirname + '/../migrations/seed/*.ts'],
+  cli: {
+    migrationsDir: 'src/migrations/seed',
+  },
+  synchronize: false,
+  migrationsRun: false,
+  name: 'seed'
+}
+];
 
 export = config;
