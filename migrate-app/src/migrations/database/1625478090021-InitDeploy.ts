@@ -1,14 +1,9 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-// import { User } from '../../resources/users/users.entity'
 
 export class InitDeploy1625478090021 implements MigrationInterface {
   name = 'InitDeploy1625478090021';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    // const root = getRepository(User).create({
-    //   login: 'admin',
-    // })
-    // root.hashPassword('admin')
     await queryRunner.query(
       `CREATE TABLE "user" ("id" character varying NOT NULL, "name" character varying NOT NULL, "login" character varying NOT NULL, "password" character varying NOT NULL, CONSTRAINT "PK_cace4a159ff9f2512dd42373760" PRIMARY KEY ("id"))`,
     );
@@ -33,10 +28,6 @@ export class InitDeploy1625478090021 implements MigrationInterface {
     await queryRunner.query(
       `ALTER TABLE "task" ADD CONSTRAINT "FK_4f196ca1ee5d10a97018d33a114" FOREIGN KEY ("columnIdId") REFERENCES "board_column"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`,
     );
-    // await queryRunner.query(
-    //   `INSERT INTO public.user("id", "name", "login", "password") 
-    //   VALUES ('${root.id}', '${root.name}', '${root.login}', '${root.password}')`
-    // )
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

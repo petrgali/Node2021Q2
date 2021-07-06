@@ -11,6 +11,7 @@ import { BoardColumn } from './resources/columns/columns.entity';
 import { BoardsModule } from './resources/boards/boards.module';
 import { TasksModule } from './resources/tasks/tasks.module';
 import { Task } from './resources/tasks/tasks.entity';
+import { LoginModule } from './resources/login/login.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { Task } from './resources/tasks/tasks.entity';
       }),
       inject: [ConfigService],
     }),
+    LoginModule,
     UsersModule,
     BoardsModule,
     TasksModule,
@@ -39,4 +41,4 @@ import { Task } from './resources/tasks/tasks.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

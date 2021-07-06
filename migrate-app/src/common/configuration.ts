@@ -9,4 +9,5 @@ export default () => ({
     password: process.env['POSTGRES_PASSWORD'],
     database: process.env['POSTGRES_DB'],
   },
+  secret: process.env['JWT_SECRET_KEY'],
 });
