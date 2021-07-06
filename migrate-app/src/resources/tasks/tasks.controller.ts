@@ -7,12 +7,15 @@ import {
   Body,
   Param,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDTO } from './dto/create.task.dto';
 import { Task } from './tasks.entity';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Controller('boards/:boardId/tasks')
+@UseGuards(AuthGuard)
 export class TasksController {
   constructor(private readonly taskService: TasksService) {}
 

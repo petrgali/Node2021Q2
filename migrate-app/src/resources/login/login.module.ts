@@ -10,4 +10,4 @@ import { LoginService } from './login.service';
   controllers: [LoginController],
   providers: [UsersService, LoginService],
 })
-export class LoginModule { }
+export class LoginModule {}

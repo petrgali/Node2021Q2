@@ -8,12 +8,15 @@ import {
   Param,
   NotFoundException,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { User } from './users.entity';
 import { UsersService } from './users.service';
 import { CreateUserDTO } from './dto/create.user.dto';
+import { AuthGuard } from '../../guards/auth.guard';
 
 @Controller('users')
+@UseGuards(AuthGuard)
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../resources/users/users.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()
@@ -26,6 +26,6 @@ export class LoginGuard implements CanActivate {
     if (!registered) throw new ForbiddenException('User not found');
     const match = await bcrypt.compare(password, registered.password);
     if (!match) throw new UnauthorizedException('Wrong password');
-    return true;
+    return match;
   }
 }
