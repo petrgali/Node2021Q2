@@ -17,6 +17,10 @@ export class User {
   password: string;
 
   @BeforeInsert()
+  hash() {
+    this.password = bcrypt.hashSync(this.password, 10)
+  }
+
   hashPassword(pwd: string) {
     this.password = bcrypt.hashSync(pwd, 10);
   }

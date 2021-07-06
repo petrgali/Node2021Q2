@@ -1,20 +1,15 @@
-import {
-  Controller,
-  Post,
-  Body,
-  UnauthorizedException,
-  ForbiddenException,
-} from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import jwt from 'jsonwebtoken';
 import { UsersService } from '../users/users.service';
 import { UserCredentials } from './dto/login.dto';
+import { LoginGuard } from './guard/login.guard';
 import config from '../../common/configuration';
 
 @Controller('login')
 export class LoginController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(LoginGuard)
   @Post()
   async login(
     @Body() userCredentials: UserCredentials,
@@ -22,16 +17,10 @@ export class LoginController {
     const registered = await this.usersService.findByLogin(
       userCredentials.login,
     );
-    if (!registered) throw new ForbiddenException('User not found');
-    const match = await bcrypt.compare(
-      userCredentials.password,
-      registered.password,
-    );
-    if (!match) throw new UnauthorizedException('Wrong password');
     const token = jwt.sign(
       {
-        userId: registered.id,
-        login: registered.login,
+        userId: String(registered?.id),
+        login: userCredentials.login,
       },
       String(config().secret),
       { expiresIn: 60 * 60 },

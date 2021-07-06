@@ -41,4 +41,4 @@ import { LoginModule } from './resources/login/login.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
