@@ -1,6 +1,7 @@
 export default () => ({
   server: {
     port: parseInt(String(process.env['PORT']), 10) || 3000,
+    adapter: process.env['USE_FASTIFY'],
   },
   database: {
     host: process.env['POSTGRES_HOST'],

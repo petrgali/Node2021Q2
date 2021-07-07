@@ -43,6 +43,6 @@ export class AuthGuard implements CanActivate {
       const user = await this.userService.findOne(userId);
       return !!user;
     }
-    throw new UnauthorizedException();
+    throw new UnauthorizedException('No token provided');
   }
 }
