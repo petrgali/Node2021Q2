@@ -37,9 +37,6 @@ export class BoardsService {
         await this.connection.manager.save(newColumn);
       }
     }
-    // const board = await this.boardRepository.findOne(newBoard.id, {
-    //   relations: ['columns'],
-    // })
     return newBoard;
   }
 

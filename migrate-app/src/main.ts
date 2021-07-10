@@ -6,6 +6,7 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { AppModule } from './app.module';
 import config from './common/configuration';
+import { Logger } from './guards/logger.guard';
 
 async function bootstrap() {
   const adapterFastify = String(config().server.adapter);
@@ -16,6 +17,7 @@ async function bootstrap() {
         new FastifyAdapter(),
       ))
     : (app = await NestFactory.create(AppModule));
+  app.useGlobalGuards(new Logger());
   const configService: ConfigService = app.get(ConfigService);
   await app.listen(String(configService.get('PORT')), '0.0.0.0');
 }
