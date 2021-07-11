@@ -49,4 +49,4 @@ import { ExceptionsLoggerFilter } from './filters/exceptions.filter';
     },
   ],
 })
-export class AppModule { }
+export class AppModule {}
