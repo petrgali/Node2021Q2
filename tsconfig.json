@@ -2,6 +2,12 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": true,
+    "baseUrl": "./",
+    "incremental": true,
     "allowJs": false,
     "outDir": "./build",
     "rootDir": "./src",
@@ -21,6 +27,13 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
   },
-  "exclude": ["node_modules/", "jsdocs", "test", "build"],
-  "include": ["src/**/*.ts"]
+  "exclude": [
+    "node_modules/",
+    "jsdocs",
+    "test",
+    "build"
+  ],
+  "include": [
+    "src/**/*.ts"
+  ]
 }

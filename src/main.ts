@@ -17,9 +17,9 @@ async function bootstrap() {
   let app;
   adapterFastify === 'true'
     ? (app = await NestFactory.create<NestFastifyApplication>(
-      AppModule,
-      new FastifyAdapter(),
-    ))
+        AppModule,
+        new FastifyAdapter(),
+      ))
     : (app = await NestFactory.create(AppModule));
 
   const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));

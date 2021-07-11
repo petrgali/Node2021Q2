@@ -1,24 +1,45 @@
-import dotenv from 'dotenv'
-import path from 'path'
-import { ConnectionOptions } from 'typeorm'
+import { ConnectionOptions } from 'typeorm';
+import { User } from '../modules/users/users.entity';
+import { Board } from '../modules/boards/boards.entity';
+import { Task } from '../modules/tasks/tasks.entity';
+import { BoardColumn } from '../modules/columns/columns.entity';
+import configuration from './configuration';
 
-dotenv.config({
-    path: path.join(__dirname, '../../.env')
-})
+const conn = configuration();
 
-const config: ConnectionOptions = {
+const config: ConnectionOptions[] = [
+  {
     type: 'postgres',
-    host: process.env['POSTGRES_HOST'],
-    port: Number(process.env['POSTGRES_PORT']),
-    username: process.env['POSTGRES_USER'],
-    password: process.env['POSTGRES_PASSWORD'],
-    database: process.env['POSTGRES_DB'],
-    entities: [__dirname + '/../entities/**/*.ts'],
-    migrations: [__dirname + '/../migrations/*.ts'],
+    host: conn.database.host,
+    port: Number(conn.database.port),
+    username: conn.database.username,
+    password: conn.database.password,
+    database: conn.database.database,
+    entities: [User, Board, BoardColumn, Task],
+    migrations: [__dirname + '/../migrations/database/*.ts'],
     cli: {
-        migrationsDir: 'src/migrations'
+      migrationsDir: 'src/migrations/database',
     },
     synchronize: false,
-    migrationsRun: true
-}
-export = config
+    migrationsRun: false,
+    name: 'database',
+  },
+  {
+    type: 'postgres',
+    host: conn.database.host,
+    port: Number(conn.database.port),
+    username: conn.database.username,
+    password: conn.database.password,
+    database: conn.database.database,
+    entities: [User, Board, BoardColumn, Task],
+    migrations: [__dirname + '/../migrations/seed/*.ts'],
+    cli: {
+      migrationsDir: 'src/migrations/seed',
+    },
+    synchronize: false,
+    migrationsRun: false,
+    name: 'seed',
+  },
+];
+
+export = config;
