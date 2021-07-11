@@ -6,7 +6,6 @@ import {
   Delete,
   Body,
   Param,
-  NotFoundException,
   BadRequestException,
   UseGuards,
 } from '@nestjs/common';
@@ -14,6 +13,7 @@ import { Board } from './boards.entity';
 import { CreateBoardDTO } from './dto/create.board.dto';
 import { BoardsService } from './boards.service';
 import { AuthGuard } from '../../guards/auth.guard';
+import { BoardNotFound } from './boardNotFound.exception';
 
 @Controller('boards')
 @UseGuards(AuthGuard)
@@ -29,7 +29,7 @@ export class BoardsController {
   async findOne(@Param('id') id: string): Promise<Board> {
     const record = await this.boardsService.findOne(id);
     if (record) return record;
-    throw new NotFoundException('Board not found');
+    throw new BoardNotFound(id);
   }
 
   @Post()
@@ -44,7 +44,7 @@ export class BoardsController {
   ): Promise<Board> {
     const updated = await this.boardsService.update(id, updateBoard);
     if (updated) return updated;
-    throw new BadRequestException('Bad request');
+    throw new BadRequestException();
   }
 
   @Delete(':id')

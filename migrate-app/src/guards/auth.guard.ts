@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import jwt from 'jsonwebtoken';
 import config from '../common/configuration';
 import { Token } from '../common/types';
-import { UsersService } from '../resources/users/users.service';
+import { UsersService } from '../modules/users/users.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

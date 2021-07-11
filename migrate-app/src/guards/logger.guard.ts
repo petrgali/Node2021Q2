@@ -1,10 +1,12 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { finished } from 'stream';
-import { User } from '../resources/users/users.entity';
+import { User } from '../modules/users/users.entity';
+import { LoggerService } from '../modules/logger/logger.service'
 
 @Injectable()
 export class Logger implements CanActivate {
+  constructor(private readonly loggerService: LoggerService) { }
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -12,52 +14,21 @@ export class Logger implements CanActivate {
     const response = context.switchToHttp().getResponse();
     const date = new Date();
     const start = process.hrtime();
+
     finished(response, () => {
       const body: User = request.body;
       if (body.password) body.password = '******';
-      console.log(
-        request.ip.split(':').slice(-1) +
-          ' - '.repeat(2) +
-          '[' +
-          this.formatDate(date) +
-          ']' +
-          " '" +
-          request.method +
-          ' ' +
-          request.originalUrl +
-          "' " +
-          JSON.stringify(request.params) +
-          ' ' +
-          JSON.stringify(body) +
-          ' ' +
-          response.statusCode +
-          ' ' +
-          this.getRequestDuration(start).toLocaleString() +
-          'ms\n',
-      );
+      this.loggerService.log({
+        ip: request.ip,
+        currentDate: date,
+        method: request.method,
+        url: request.originalUrl,
+        params: JSON.stringify(request.params),
+        body: body,
+        status: response.statusCode,
+        start: start
+      })
     });
     return true;
   }
-  formatDate = (currentDate: Date): string => {
-    return (
-      currentDate.getFullYear() +
-      '-' +
-      ('0' + (currentDate.getMonth() + 1)).slice(-2) +
-      '-' +
-      ('0' + currentDate.getDate()).slice(-2) +
-      ':' +
-      currentDate.getHours() +
-      ':' +
-      ('0' + currentDate.getMinutes()).slice(-2) +
-      ':' +
-      ('0' + currentDate.getSeconds()).slice(-2)
-    );
-  };
-
-  getRequestDuration = (start: [number, number]): number => {
-    const SEC = 1e9;
-    const MS = 1e6;
-    const diff = process.hrtime(start);
-    return (diff[0] * SEC + diff[1]) / MS;
-  };
 }

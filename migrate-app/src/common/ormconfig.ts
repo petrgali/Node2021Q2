@@ -1,8 +1,8 @@
 import { ConnectionOptions } from 'typeorm';
-import { User } from '../resources/users/users.entity';
-import { Board } from '../resources/boards/boards.entity';
-import { Task } from '../resources/tasks/tasks.entity';
-import { BoardColumn } from '../resources/columns/columns.entity';
+import { User } from '../modules/users/users.entity';
+import { Board } from '../modules/boards/boards.entity';
+import { Task } from '../modules/tasks/tasks.entity';
+import { BoardColumn } from '../modules/columns/columns.entity';
 import configuration from './configuration';
 
 const conn = configuration();

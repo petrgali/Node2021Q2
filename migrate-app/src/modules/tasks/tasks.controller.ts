@@ -6,13 +6,13 @@ import {
   Delete,
   Body,
   Param,
-  NotFoundException,
   UseGuards,
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDTO } from './dto/create.task.dto';
 import { Task } from './tasks.entity';
 import { AuthGuard } from '../../guards/auth.guard';
+import { TaskNotFound, BoardTasksNotFound } from './taskNotFound.exception';
 
 @Controller('boards/:boardId/tasks')
 @UseGuards(AuthGuard)
@@ -23,7 +23,7 @@ export class TasksController {
   async findAll(@Param('boardId') boardId: string): Promise<Task[]> {
     const tasksList = await this.taskService.findAll(boardId);
     if (tasksList) return tasksList;
-    throw new NotFoundException('Tasks not found');
+    throw new BoardTasksNotFound(boardId);
   }
 
   @Get(':id')
@@ -33,7 +33,7 @@ export class TasksController {
       String(params.id),
     );
     if (task) return task;
-    throw new NotFoundException('Task not found');
+    throw new TaskNotFound(String(params.id));
   }
 
   @Post()

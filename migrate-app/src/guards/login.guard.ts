@@ -6,7 +6,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { UsersService } from '../resources/users/users.service';
+import { UsersService } from '../modules/users/users.service';
 import * as bcrypt from 'bcryptjs';
 
 @Injectable()

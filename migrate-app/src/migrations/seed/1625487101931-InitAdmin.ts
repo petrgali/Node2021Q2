@@ -1,5 +1,5 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { User } from '../../resources/users/users.entity';
+import { User } from '../../modules/users/users.entity';
 
 export class InitAdmin1625487101931 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

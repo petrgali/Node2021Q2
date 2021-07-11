@@ -1,4 +1,4 @@
-import { CreateColumnDTO } from 'src/resources/columns/dto/create.column.dto';
+import { CreateColumnDTO } from 'src/modules/columns/dto/create.column.dto';
 
 export interface CreateBoardDTO {
   id?: string;

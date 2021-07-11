@@ -4,14 +4,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import configuration from './common/configuration';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './resources/users/users.module';
-import { User } from './resources/users/users.entity';
-import { Board } from './resources/boards/boards.entity';
-import { BoardColumn } from './resources/columns/columns.entity';
-import { BoardsModule } from './resources/boards/boards.module';
-import { TasksModule } from './resources/tasks/tasks.module';
-import { Task } from './resources/tasks/tasks.entity';
-import { LoginModule } from './resources/login/login.module';
+import { UsersModule } from './modules/users/users.module';
+import { User } from './modules/users/users.entity';
+import { Board } from './modules/boards/boards.entity';
+import { BoardColumn } from './modules/columns/columns.entity';
+import { BoardsModule } from './modules/boards/boards.module';
+import { TasksModule } from './modules/tasks/tasks.module';
+import { Task } from './modules/tasks/tasks.entity';
+import { LoginModule } from './modules/login/login.module';
+import { APP_FILTER } from '@nestjs/core';
+import { ExceptionsLoggerFilter } from './filters/exceptions.filter';
 
 @Module({
   imports: [
@@ -39,6 +41,12 @@ import { LoginModule } from './resources/login/login.module';
     TasksModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: ExceptionsLoggerFilter,
+    },
+  ],
 })
-export class AppModule {}
+export class AppModule { }
