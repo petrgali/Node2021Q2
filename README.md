@@ -1,73 +1,117 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# RS School REST service
+---
+## Table of contents
+* [Prerequisites](#prerequisites)
+* [Downloading](#downloading)
+* [Installing](#installing)
+* [Running](#running)
+* [Development](#development)
+---
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+## Prerequisites
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+- Git - [Download & Install Git](https://git-scm.com/downloads).
+- Node.js - [Download & Install Node.js](https://nodejs.org/en/download/) and the npm package manager.
+- [Docker](https://docs.docker.com/engine/install/) and `docker-compose` - must be installed on your system
 
-## Description
+## Downloading
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
-
-```bash
-$ npm install
+```
+git clone {repository URL}
+git checkout task7/TypeORM-Postgres
 ```
 
-## Running the app
+## Installing
 
-```bash
-# development
-$ npm run start
+```
+npm i
+```
+Strongly recommend to install official Docker extension for VS-Code, it makes docker workflow 
+and task testing much more easier
+![preview](https://i.ibb.co/C6v9PQ0/Screenshot-from-2021-06-21-14-04-41.png)
 
-# watch mode
-$ npm run start:dev
 
-# production mode
-$ npm run start:prod
+## Running
+
+In this task all migrations runs at app startup, so all You got to do just run the command:
+```
+docker-compose up
+```
+To start migration you should wait till app start 
+and then exec command `npm run typeorm:cli -- migraion:run` **!! inside a container !!**
+If you installed Docker extension which I mentioned earlier click on its icon 
+on the side panel in VS-Code or if You don't installed --> [check this instruction](#No-extension)
+
+![preview](https://i.ibb.co/txG3yQW/Screenshot-from-2021-06-21-14-18-43.png)
+Then navigate to `Containers` section
+
+![preview](https://i.ibb.co/Wsy4CXQ/Screenshot-from-2021-06-21-14-21-28.png)
+
+Right-click on `petrgali/rest-api` and then `Attach Shell` line
+
+![preview](https://i.ibb.co/HgkNBXV/Untitled.png)
+
+And finally in opened terminal on the bottom of VS-Code just type `npm run typeorm:cli -- migraion:run` and hit enter!
+
+![preview](https://i.ibb.co/88B5qPW/Screenshot-from-2021-06-21-14-28-27.png)
+
+That's all! You're done!
+
+## No-extension
+
+Type `docker ps`. To run migration we need first 
+to get `CONTAINER_ID` with runnning app - `petrgali/rest-api`
+
+![preview](https://i.ibb.co/prgxBhG/Screenshot-from-2021-06-21-15-00-22.png)
+
+And now to run migration inside container 
+type command `docker container exec CONTAINER_ID npm run typeorm:cli -- migration:run`.
+
+In my case command looks like this way
+
+![preview](https://i.ibb.co/c3BL8Bc/Screenshot-from-2021-06-21-15-07-44.png)
+
+
+## Testing
+
+After application running and migration ran open new terminal and enter:
+
+To run all tests without authorization
+
+```
+npm test
 ```
 
-## Test
+To run only one of all test suites (users, boards or tasks)
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+```
+npm test <suite name>
 ```
 
-## Support
+To run all test with authorization
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```
+npm run test:auth
+```
 
-## Stay in touch
+To run only specific test suite with authorization (users, boards or tasks)
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+npm run test:auth <suite name>
+```
 
-## License
+## Development
 
-Nest is [MIT licensed](LICENSE).
+If you're using VSCode, you can get a better developer experience from integration with [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) and [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) extensions.
+
+### Auto-fix and format
+
+```
+npm run lint
+```
+
+### Debugging in VSCode
+
+Press <kbd>F5</kbd> to debug.
+
+For more information, visit: https://code.visualstudio.com/docs/editor/debugging
