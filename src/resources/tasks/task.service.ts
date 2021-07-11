@@ -1,4 +1,4 @@
-import API from './task.memory.repository'
+import API from './task.repository'
 import Task from '../../entities/task.entity'
 import { TaskDTO } from "../../common/types"
 import { DeleteResult } from 'typeorm'

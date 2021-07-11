@@ -5,7 +5,9 @@ import YAML from 'yamljs'
 import userRouter from './resources/users/user.router'
 import boardRouter from './resources/boards/board.router'
 import taskRouter from './resources/tasks/task.router'
-import logger from './middlewares/index'
+import loginRouter from './auth/login/login.router'
+import { sessionValidate } from './middlewares/auth/session.validate'
+import logger from './middlewares/log/index'
 
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'))
 const app: Application = express()
@@ -20,6 +22,8 @@ app.use('/', (req: Request, res: Response, next: NextFunction) => {
   }
   next()
 })
+app.use('/login', loginRouter)
+app.use(sessionValidate)
 app.use('/users', userRouter)
 app.use('/boards', boardRouter)
 app.use('/boards/:boardId/tasks', taskRouter)

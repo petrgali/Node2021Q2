@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express'
 import Board from '../../entities/board.entity'
 import { serviceAPI } from './board.service'
 import { STATUS, MSG } from '../../common/const'
-import { LogError } from '../../middlewares/error.logger.interface'
+import { LogError } from '../../middlewares/log/error.logger.interface'
 
 const router = Router()
 
