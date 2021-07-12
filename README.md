@@ -18,7 +18,7 @@
 
 ```
 git clone {repository URL}
-git checkout task7/TypeORM-Postgres
+git checkout task9/NestJS-migration
 ```
 
 ## Installing
@@ -33,12 +33,14 @@ and task testing much more easier
 
 ## Running
 
-In this task all migrations runs at app startup, so all You got to do just run the command:
+In this task You should run migrations before testing app.
+
+First of all start Docker container:
 ```
 docker-compose up
 ```
 To start migration you should wait till app start 
-and then exec command `npm run typeorm:cli -- migraion:run` **!! inside a container !!**
+and then exec command `npm run database:init` **!! inside a container !!**
 If you installed Docker extension which I mentioned earlier click on its icon 
 on the side panel in VS-Code or if You don't installed --> [check this instruction](#No-extension)
 
@@ -51,9 +53,9 @@ Right-click on `petrgali/rest-api` and then `Attach Shell` line
 
 ![preview](https://i.ibb.co/HgkNBXV/Untitled.png)
 
-And finally in opened terminal on the bottom of VS-Code just type `npm run typeorm:cli -- migraion:run` and hit enter!
+And finally in opened terminal on the bottom of VS-Code just type `npm run database:init` and hit enter!
 
-![preview](https://i.ibb.co/88B5qPW/Screenshot-from-2021-06-21-14-28-27.png)
+![preview](https://i.ibb.co/q12QKW5/Screenshot-from-2021-07-12-10-55-02.png)
 
 That's all! You're done!
 
@@ -65,11 +67,7 @@ to get `CONTAINER_ID` with runnning app - `petrgali/rest-api`
 ![preview](https://i.ibb.co/prgxBhG/Screenshot-from-2021-06-21-15-00-22.png)
 
 And now to run migration inside container 
-type command `docker container exec CONTAINER_ID npm run typeorm:cli -- migration:run`.
-
-In my case command looks like this way
-
-![preview](https://i.ibb.co/c3BL8Bc/Screenshot-from-2021-06-21-15-07-44.png)
+type command `docker container exec CONTAINER_ID npm run database:init`.
 
 
 ## Testing
